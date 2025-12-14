@@ -1,1 +1,59 @@
-example_files
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Byte-compiled / optimized / DLL files
+*.pyo
+*.pyd
+*.so
+
+# --- FastAPI / SQLModel ---
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Migrations
+versions/
+
+# --- Logs ---
+*.log
+
+# --- Testing ---
+.coverage
+htmlcov/
+pytest_cache/
+.coverage.*
+
+# Test databases
+test.db
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- General ---
+.DS_Store
+Thumbs.db
+
+# --- Node Manager specific ---
+# Backend build artifacts or temp files
+backend/app/utils/__pycache__/
+backend/app/tests/__pycache__/
+backend/app/models/__pycache__/
+backend/app/schemas/__pycache__/
+
+# If there are any exported configuration files
+exported_configs/
+
+# Other temporary files
+example_files/

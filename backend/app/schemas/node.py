@@ -18,7 +18,7 @@ class NodeRead(BaseModel):
     name: str
     location: str | None = None
     last_updated: datetime
-    version: str
+    version: str | None = None
     hardware: HardwareConfiguration
     irrigation_limits: IrrigationLimits
     automation: Automation
