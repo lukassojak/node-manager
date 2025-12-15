@@ -16,9 +16,6 @@ class Zone(SQLModel, table=True):
     enabled: bool = True
 
     irrigation_mode: IrrigationMode
-    target_mm: float | None = None
-    zone_area_m2: float | None = None
-    base_target_volume_liters: float | None = None
 
     # nested configurations stored as JSON
     local_correction_factors: dict | None = Field(default=None, sa_column=Column(JSON))
