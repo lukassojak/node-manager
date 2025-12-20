@@ -16,6 +16,12 @@ class NodeService:
 
 
     def get_node(self, node_id: int) -> Node | None:
+        """
+        Retrieve a node by its ID.
+
+        :param node_id: The ID of the node to retrieve.
+        :return: The Node object if found, otherwise None.
+        """
         node = self.node_repo.get(node_id)
         return node
 
@@ -25,6 +31,13 @@ class NodeService:
 
 
     def create_node(self, data: NodeCreate) -> Node:
+        """
+        Create a new node with the provided data.
+
+        :param data: NodeCreate schema containing the node details.
+        :return: The newly created Node object.
+        :raises ValueError: If a node with the same name already exists.
+        """
         new_node = Node(
             name=data.name,
             location=data.location,
@@ -50,6 +63,14 @@ class NodeService:
 
 
     def add_zone_to_node(self, node_id: int, zone_data: ZoneCreate) -> Zone:
+        """
+        Add a new zone to the specified node.
+        
+        :param node_id: The ID of the node to which the zone will be added.
+        :param zone_data: ZoneCreate schema containing the zone details.
+        :return: The newly created Zone object.
+        :raises ValueError: If the node with the specified ID does not exist.
+        """
         node = self.node_repo.get(node_id)
         if not node:
             raise ValueError("Node {node_id} not found")
