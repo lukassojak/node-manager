@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0] - 2025-12-20
 
 ### Added
 - initial project setup
@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - index on `Node.name` and `Zone.name`
 - improved `last_updated` handling using timezone-aware default factory
 - new unified structure for `node_X_config.json` reflecting irrigation modes
+- Implemented repository layer for Node and Zone entities
+- Added NodeRepository with CRUD operations and domain-specific zone access
+- Added ZoneRepository with CRUD operations and node-scoped queries
+- Introduced consistent repository contract using `flush()` instead of `commit()`
+- Added unit tests for NodeRepository and ZoneRepository using in-memory SQLite
+- Implemented service layer `NodeService` for Node business logic
 
 ### Changed
 

@@ -1,10 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship, Column, JSON
-from enum import Enum
 
-
-class IrrigationMode(str, Enum):
-    EVEN_AREA = "even_area"
-    PER_PLANT = "per_plant"
+from app.domain.domain import IrrigationMode
 
 
 class Zone(SQLModel, table=True):

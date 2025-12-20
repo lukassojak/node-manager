@@ -13,12 +13,15 @@ from app.schemas.emitters import (
     EmittersConfigurationPerPlant
 )
 
+from app.domain.domain import IrrigationMode
+
 
 class ZoneRead(BaseModel):
     id: int
     name: str
     relay_pin: int
     enabled: bool
+    irrigation_mode: IrrigationMode
     local_correction_factors: LocalCorrectionFactors
     frequency_settings: FrequencySettings
     fallback_strategy: FallbackStrategy
@@ -30,6 +33,7 @@ class ZoneCreate(BaseModel):
     name: str
     relay_pin: int
     enabled: bool
+    irrigation_mode: IrrigationMode
     local_correction_factors: LocalCorrectionFactors
     frequency_settings: FrequencySettings
     fallback_strategy: FallbackStrategy

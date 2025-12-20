@@ -46,6 +46,7 @@ class NodeRepository:
         ).all()
     
 
+    # TODO: remove
     def add_zone(self, node_id: int, zone: Zone) -> Zone:
         node = self.get(node_id)
         if not node:
