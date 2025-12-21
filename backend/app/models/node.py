@@ -19,5 +19,8 @@ class Node(SQLModel, table=True):
     batch_strategy: dict | None = Field(default=None, sa_column=Column(JSON))
     logging: dict | None = Field(default=None, sa_column=Column(JSON))
 
-    zones: list["Zone"] = Relationship(back_populates="node")
+    zones: list["Zone"] = Relationship(
+        back_populates="node",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
 

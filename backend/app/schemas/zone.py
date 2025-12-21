@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.irrigation import (
     LocalCorrectionFactors,
@@ -17,6 +17,8 @@ from app.domain.domain import IrrigationMode
 
 
 class ZoneRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     relay_pin: int
@@ -53,6 +55,8 @@ class ZoneUpdate(BaseModel):
 
 
 class ZoneListRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     relay_pin: int

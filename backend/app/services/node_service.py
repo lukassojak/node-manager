@@ -24,11 +24,24 @@ class NodeService:
         """
         node = self.node_repo.get(node_id)
         return node
+    
+
+    def get_zone(self, node_id: int, zone_id: int) -> Zone | None:
+        zone = self.zone_repo.get(zone_id)
+        if not zone or zone.node_id != node_id:
+            return None
+        return zone
 
 
-    def list_nodes(self) -> list[Node] | None:
-        pass
+    def list_nodes(self) -> list[Node]:
+        nodes = self.node_repo.list_all()
+        return nodes
 
+
+    def list_zones(self, node_id: int) -> list[Zone]:
+        zones = self.zone_repo.list_by_node(node_id)
+        return zones
+    
 
     def create_node(self, data: NodeCreate) -> Node:
         """
@@ -59,7 +72,21 @@ class NodeService:
 
 
     def delete_node(self, node_id: int) -> bool:
-        pass
+        deleted = self.node_repo.delete(node_id)
+        if not deleted:
+            return False
+        
+        self.session.commit()
+        return True
+    
+
+    def delete_zone(self, node_id: int, zone_id: int) -> bool:
+        deleted = self.zone_repo.delete(zone_id)
+        if not deleted or zone_id.node_id != node_id:
+            return False
+        
+        self.session.commit()
+        return True
 
 
     def add_zone_to_node(self, node_id: int, zone_data: ZoneCreate) -> Zone:

@@ -20,4 +20,6 @@ class Zone(SQLModel, table=True):
     irrigation_configuration: dict | None = Field(default=None, sa_column=Column(JSON))
     emitters_configuration: dict | None = Field(default=None, sa_column=Column(JSON))
 
-    node: "Node" = Relationship(back_populates="zones")
+    node: "Node" = Relationship(
+        back_populates="zones"
+    )

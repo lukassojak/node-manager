@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-12-21
+
+### Added
+- REST API endpoints for Node and Zone configuration management
+- Zone sub-resources scoped under Node aggregate (`/nodes/{id}/zones`)
+- Support for creating, listing, retrieving and deleting zones
+- Automatic cascading delete of zones when deleting a node
+
+### Changed
+- Updated NodeService to enforce node–zone relationship validation
+- Improved schema mapping using Pydantic `from_attributes` configuration
+- Refined domain model relationships for safe cascade operations
+
+### Fixed
+
+### Removed
+
+### Known Issues
+
+---
+
 ## [0.1.0] - 2025-12-20
 
 ### Added

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from datetime import datetime
 
@@ -14,6 +14,8 @@ from app.schemas.irrigation import (
 
 
 class NodeRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     location: str | None = None
@@ -29,7 +31,7 @@ class NodeRead(BaseModel):
 
 class NodeCreate(BaseModel):
     name: str
-    location: str | None = None
+    location: str | None = None 
     hardware: HardwareConfiguration
     irrigation_limits: IrrigationLimits
     automation: Automation
@@ -48,6 +50,8 @@ class NodeUpdate(BaseModel):
 
 
 class NodeListRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     location: str | None = None
