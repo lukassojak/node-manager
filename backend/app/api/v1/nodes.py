@@ -7,6 +7,7 @@ from app.models.node import Node
 from app.models.zone import Zone
 from app.services.node_service import NodeService
 from app.db.session import get_session
+from app.exporters.node_config_exporter import export_node_config
 
 router = APIRouter()
 
@@ -118,3 +119,18 @@ def delete_zone(node_id: int, zone_id: int, session: Session = Depends(get_sessi
     success = service.delete_zone(node_id, zone_id)
     if not success:
         raise HTTPException(status_code=404, detail="Zone not found")
+    
+
+@router.get(
+    "/{node_id}/export",
+    summary="Export node configuration",
+    response_model=dict,
+    status_code=200,
+)
+def export_node(node_id: int, session: Session = Depends(get_session)):
+    service = NodeService(session)
+    node = service.get_node(node_id)
+    if not node:
+        raise HTTPException(status_code=404, detail="Node not found")
+    config = export_node_config(node)
+    return config

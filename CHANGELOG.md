@@ -12,11 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zone sub-resources scoped under Node aggregate (`/nodes/{id}/zones`)
 - Support for creating, listing, retrieving and deleting zones
 - Automatic cascading delete of zones when deleting a node
+- Node configuration export in SIS-compatible `node_X_config.json` format
+- Metadata section in exported configuration (version, last_updated, exported_at)
+- REST endpoint for exporting node configuration (`GET /nodes/{id}/export`)
+- `docs/ZONE_CONFIG_WIZARD.md` documentation for Zone Configuration Wizard
 
 ### Changed
 - Updated NodeService to enforce node–zone relationship validation
 - Improved schema mapping using Pydantic `from_attributes` configuration
 - Refined domain model relationships for safe cascade operations
+- Clarified separation between configuration planning (Node Manager) and runtime execution (SIS)
+- Prepared backend architecture for future irrigation computation and optimization logic
+- `README.md` updated
 
 ### Fixed
 

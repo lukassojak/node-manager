@@ -1,12 +1,15 @@
 # Node Manager
 
-**Node Manager** je samostatná backendová + frontendová webová aplikace sloužící ke konfiguraci zavlažovacích nodů pro projekt **Smart Irrigation System (SIS)**.
+**Node Manager** je samostatná backendová + frontendová webová aplikace určená ke konfiguraci zavlažovacích nodů pro projekt **Smart Irrigation System (SIS)**.
 
-Projekt je primárně:
-- **cvičný / demonstrační backend projekt** (junior → medior level),
-- zároveň **praktický konfigurační nástroj** pro reálný IoT systém.
+Projekt má dva hlavní účely:
+- 🎓 **učební / demonstrační projekt** (začátečník → junior → strong junior backend),
+- 🌱 **praktický konfigurační nástroj** pro reálný IoT systém.
 
-Node Manager není runtime součástí SIS – slouží výhradně k návrhu, validaci, ukládání a exportu konfigurací, které jsou následně nahrány do SIS serveru nebo přímo na node.
+Node Manager **není runtime součástí SIS**.  
+Slouží výhradně k **návrhu, validaci, ukládání a exportu konfigurací**, které jsou následně:
+- nahrány do SIS serveru,
+- nebo distribuovány přímo na jednotlivé nody.
 
 ---
 
@@ -15,16 +18,16 @@ Node Manager není runtime součástí SIS – slouží výhradně k návrhu, va
 Cílem Node Manageru je:
 - nahradit ruční editaci JSON konfigurací,
 - poskytnout strukturované REST API pro správu:
-  - nodů
-  - zavlažovacích zón
-  - jejich parametrů
-- generovat **validní konfigurační soubory**, které odpovídají architektuře SIS.
+  - zavlažovacích nodů
+  - jejich zón
+  - parametrů zavlažování
+- generovat **finální, SIS-kompatibilní konfigurační soubory**.
 
-Projekt je navržen jako **nearly-production-grade backend aplikace**, se zaměřením na:
+Projekt je navržen jako **nearly-production-grade backend aplikace** se zaměřením na:
 - clean architecture
 - separation of concerns
-- čitelnost a rozšiřitelnost
-- testovatelnost
+- čitelnost a dlouhodobou rozšiřitelnost
+- realistické job-relevant patterns (service layer, repository layer, DTOs)
 
 ---
 
@@ -32,20 +35,23 @@ Projekt je navržen jako **nearly-production-grade backend aplikace**, se zamě�
 
 **Smart Irrigation System (SIS)** je distribuovaný IoT systém:
 
-- **Edge Node** (Raspberry Pi Zero 2 W)
-  - lokální autonomní řízení zavlažování
-  - multithreading, fail-safe logika
-  - práce s počasím, fallback strategie
-- **Central Server**
-  - MQTT komunikace s nody
-  - REST API
-  - monitoring
-- **Web UI**
-  - přehled stavu nodů a zón
-  - vizualizace spotřeby vody
+### Edge Node
+- Raspberry Pi Zero 2 W
+- autonomní řízení zavlažování
+- multithreading, fail-safe logika
+- práce s počasím, korekce, fallback strategie
 
-👉 **Node Manager není součástí runtime architektury SIS**  
-👉 Slouží pouze k **přípravě konfigurace**
+### Central Server
+- MQTT komunikace s nody
+- REST API
+- monitoring a orchestrace
+
+### Web UI
+- přehled stavu nodů
+- monitoring zavlažování
+
+👉 **Node Manager není součást runtime architektury SIS**  
+👉 Slouží pouze jako **konfigurační a plánovací nástroj**
 
 ---
 
@@ -58,17 +64,18 @@ Backend je navržen jako klasická REST API aplikace:
 - **FastAPI**
 - **SQLModel (SQLAlchemy + Pydantic)**
 - **SQLite** (MVP)
-- Clean Architecture styl
 
-#### Logické vrstvy:
+Architektura odpovídá clean-architecture stylu.
 
-routers/ – HTTP / REST API vrstrva
-services/ – aplikační a business logika
-repositories/ – perzistence a DB přístup
-models/ – SQLModel entity (DB reprezentace)
-schemas/ – Pydantic schémata (API kontrakty)
-core/ – konfigurace aplikace, session, app setup
+#### Logické vrstvy
 
+- routers/ – HTTP / REST API vrstva
+- services/ – aplikační a doménová logika (use-cases)
+- repositories/ – perzistence a DB přístup
+- models/ – SQLModel entity (DB reprezentace)
+- schemas/ – Pydantic schémata (API kontrakty)
+- exporters/ – export finálních SIS konfigurací
+- db/ – session, engine, init
 
 ---
 
@@ -76,11 +83,46 @@ core/ – konfigurace aplikace, session, app setup
 
 - **React**
 - **Chakra UI**
-- Wizard-style UI
+- jednoduché vizuálně atraktivní stránky + základní wizard flow
 
-Frontend není cílem projektu z hlediska hloubky – slouží hlavně jako:
-- demonstrace práce s API
-- nástroj pro konfiguraci
+**Frontend**:
+- není hlavním cílem projektu z hlediska komplexnosti,
+- stálě by měl být dostatečně funkční, moderní a interaktivní pro dobrý UX,
+- slouží jako **klient nad backend API**,
+- demonstruje end-to-end flow:
+  - konfigurace → uložení → export.
+
+**Očekávané minimální stránky**:
+1. Hlavní dashboard zobrazující:
+  - přehled aktuální konfigurace systému jako celku (`system_config.json`),
+  - možnost editovat systémovou konfiguraci,
+  - tlačítko pro export systémové konfigurace,
+  - seznam nodů a jejich minimalistické detaily (možnost kliknout na detail nodu - vede na stránku 2)
+  - tlačítko pro export nodu u každého nodu,
+  - tlačítko pro vytvoření nového nodu.
+
+2. Stránka pro detail nodu:
+  - zobrazuje kompletní přehled konfigurace nodu,
+  - tlačítko pro export konfigurace nodu,
+  - tlačítko pro odstranění nodu,
+  - přehled zón nodu včetně jejich minimalistických detail (možnost kliknout na detail zóny - vede na stránku 3),
+  - tlačítko pro vytvoření nové zóny,
+  - tlačítko pro editaci nodu (pro 2. fázi, není v základním MVP).
+
+3. Stránka pro detail zóny:
+  - zobrazuje kompletní přehled konfigurace zóny,
+  - tlačítko pro odstranění zóny,
+  - tlačítko pro editaci zóny (pro 2. fázi, není v základním MVP).
+
+4. Stránka pro vytvoření nového nodu:
+  - formulář pro zadání všech potřebných parametrů nodu,
+  - tlačítko pro uložení nového nodu,
+  - node se vytváří vždy bez zón,
+  - po vytvoření přesměrování na detail nodu (stránka 2).
+
+5. Stránka pro vytvoření nové zóny daného nodu:
+  - vícekrokový konfigurační wizard pro dobrý UX bez zahlcení uživatele technickými detaily,
+  - více podrobností v [dokumentaci wizardu](docs/ZONE_CONFIG_WIZARD.md),
 
 ---
 
@@ -90,118 +132,127 @@ Frontend není cílem projektu z hlediska hloubky – slouží hlavně jako:
 
 Node reprezentuje **jeden fyzický zavlažovací uzel** (např. skleník, zahrada).
 
-Node obsahuje:
+Obsahuje:
 - identitu a metadata
 - hardware konfiguraci
-- výchozí limity a strategie
+- zavlažovací limity
+- strategie batchování a automatizace
 - kolekci zavlažovacích zón
+
+Node je **aggregate root** celé domény.
+
+---
 
 ### Zone
 
-Zone reprezentuje **jeden zavlažovací okruh** (relay / ventil).
+Zone reprezentuje **jeden zavlažovací okruh** (ventil / relé).
 
-Zone:
-- má přesně jeden parent Node
+- vždy patří právě jednomu Node
+- nemůže existovat samostatně
 - definuje:
-  - jakým způsobem se má zavlažovat
-  - kolik vody
-  - kdy
-  - jak se má chovat při chybách
+  - způsob zavlažování
+  - množství vody
+  - frekvenci
+  - chování při chybách
 
 ---
 
 ## Konfigurační výstupy
 
-Node Manager generuje **dva typy konfiguračních souborů**:
+Node Manager generuje **finální konfigurační soubory** používané SIS.
 
 ---
 
-### `system_config.json`
-
-Globální konfigurace systému – **nezávislá na jednotlivých nodech**.
-
-Obsahuje např.:
-- referenční meteorologické podmínky
-- korekční faktory
-- konfiguraci weather API
-- výchozí hodnoty pro nové nody
-
-Používá ji:
-- SIS server
-- nepřímo i nody (přes server)
-
----
-
-### `node_X_config.json`
+### `node_X_config.json` (hlavní výstup)
 
 Konfigurace **jednoho konkrétního nodu**.
 
+- je **finálním artefaktem** pro SIS
+- SIS s ní pracuje bez další transformace
+- Node Manager funguje jako „compiler“ konfigurace
+
 Obsahuje:
-- metadata nodu
+- metadata (verze, čas exportu)
+- identitu nodu
 - hardware konfiguraci
-- lokální limity
+- zavlažovací limity
 - seznam zón
 
-Každý node má **vlastní config soubor**.
+Export je deterministický a auditovatelný.
 
 ---
 
-## Irrigation modes (zásadní koncept)
+## Irrigation modes (klíčový koncept)
 
 Každá zóna pracuje v jednom z režimů:
 
 ### `even_area`
-- zavlažování rovnoměrně podle plochy
-- zavlažovaná plocha je rovnoměrně pokryta zavlažovacími emitory
+- rovnoměrné zavlažování plochy
 - vstupy:
   - `zone_area_m2`
   - `target_mm`
-- výsledkem je vypočtený základní objem vody
+- SIS vypočítá základní objem vody
+
+---
 
 ### `per_plant`
-- zavlažování podle potřeb rostlin
-- zavlažovaná plocha je pokryta rostlinami s různými potřebami vody, případně samostatné květináče
-- vstup:
-  - `base_target_volume_liters`
-- detailní rostliny slouží:
-  - k návrhu konfigurace
-  - k vizualizaci ve web UI
-- node samotný pracuje pouze s výsledným objemem zóny
+- zavlažování podle potřeb jednotlivých rostlin
+- SIS pracuje pouze s:
+  - výsledným objemem zóny
+  - výslednou konfigurací emitorů
+
+#### Rozdělení odpovědnosti
+- **Node Manager**:
+  - návrh konfigurace
+  - (v budoucnu) optimalizační výpočty
+- **SIS Node**:
+  - runtime aplikace výsledné konfigurace
 
 ---
 
-## Fallback a robustness
+## Dvoufázový návrh výpočetní logiky
 
-Node Manager umožňuje definovat:
+### FÁZE 1 – MVP (aktuální stav)
+- UI dodává:
+  - `EmittersConfigurationPerPlant`
+  - `IrrigationConfigurationPerPlant`
+- backend:
+  - data pouze validuje
+  - uloží
+  - exportuje
+- žádné výpočty v backendu
 
-- chování při chybě počasí
-- chování při zastaralých datech
-- minimální a maximální limity zavlažování
-- strategii batchování zón
-
-Tyto informace jsou:
-- ukládány v databázi
-- serializovány do JSON
-- používány SIS node logikou
+👉 jednoduché, stabilní, rychlé MVP
 
 ---
 
-## Datový model (DB)
+### FÁZE 2 – Rozšíření (plánováno)
+- UI dodává:
+  - požadované množství vody pro rostliny
+  - dostupné drippery
+  - optimalizační strategii
+- backend:
+  - vypočítá:
+    - výslednou konfiguraci emitorů
+    - skutečný base target volume
+- **DB schéma, export i SIS API zůstávají beze změny**
+
+---
+
+## Datový model
 
 ### SQLite (MVP)
-
 - jednoduché nasazení
-- nulová režie
-- ideální pro cvičný projekt
+- minimální režie
+- ideální pro demonstrační projekt
 
 ### SQLModel
-
 - kombinuje:
   - SQLAlchemy (ORM)
   - Pydantic (validace)
 - umožňuje:
-  - čistý model
-  - snadný přechod na PostgreSQL v budoucnu
+  - čistý doménový model
+  - snadný přechod na PostgreSQL
 
 Nested konfigurace jsou ukládány jako:
 - **JSON columns**
@@ -210,64 +261,56 @@ Nested konfigurace jsou ukládány jako:
 
 ## API filozofie
 
-API používá **oddělené schemas**:
+API používá oddělená schémata:
 
 - `Create` – vstup od UI
-- `Update` – partial update
+- `Update` – částečné změny
 - `Read` – detail
 - `ListRead` – lightweight přehled
 
-To umožňuje:
-- optimalizaci přenosu dat
-- jasné API kontrakty
-- lepší škálování UI
+Zóny jsou **vždy adresovány v kontextu nodu**: `/nodes/{node_id}/zones`
 
 ---
 
 ## Stav projektu
 
-### Aktuální fáze
-**FÁZE 1 – MVP backend**
+### Aktuální stav
+✅ **Backend MVP hotový**
 
-Hotovo:
-- architektura projektu
-- SQLModel entity (Node, Zone)
-- Pydantic schemas
-- zápis do DB + testy
-- návrh finální struktury JSON konfigurací
+- kompletní REST API pro Node a Zone
+- service + repository vrstvy
+- domain-safe validace
+- export `node_X_config.json`
+- připravený prostor pro fázi 2
 
-Rozpracováno:
-- Repository layer
-- Service layer
-- REST endpoints
+🔄 **Frontend MVP – cíl dokončit MVP během 2-4 dnů**
 
 ---
 
-## Roadmapa (zkráceně)
+## Roadmapa (zjednodušeně)
 
-### Fáze 1 – MVP (2 týdny)
-- CRUD Node / Zone
-- export JSON
+### Fáze 1 – MVP
+- Node / Zone CRUD
+- export konfigurací
 - backend + frontend základ
-- základní testy
-- docker-compose
+- testy service vrstvy
 
-### Fáze 2 – rozšíření
+### Fáze 2 – Rozšíření
+- optimalizační výpočty
 - lepší validace
-- lepší error handling
-- refactoring
 - CI/CD
+- UX vylepšení
 
 ---
 
 ## Cíle z hlediska učení
 
-Tento projekt slouží k:
-- osvojení REST API návrhu
-- práci s ORM
-- návrhu doménového modelu
+Projekt slouží k osvojení:
+- návrhu REST API
+- práce s ORM
+- doménového modelování
 - clean architecture
-- přípravě projektu vhodného do CV
+- návrhu systémů vhodných do CV a na pohovor
 
 ---
 
