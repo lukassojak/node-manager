@@ -1,9 +1,21 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.routers import router as api_router
 from app.db.session import engine
 from sqlmodel import SQLModel
 
 app = FastAPI(title="Node Manager API")
+
+# CORS settings
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 SQLModel.metadata.create_all(bind=engine)
 
