@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Stack, Box, Heading, Text } from '@chakra-ui/react';
+import { Button, Stack, Box, Heading, Text } from '@chakra-ui/react';
 import { fetchNodeById } from '../api/nodes.api';
 
 
@@ -32,6 +32,12 @@ export default function NodeDetailPage() {
             <Heading mb={2}>Node {node.name}</Heading>
             <Text mb={4}>Node ID: {nodeId}</Text>
             <Text mb={4}>Location: {node.location}</Text>
+
+            <Link to={`/nodes/${node.id}/zones/new`}>
+                <Button colorScheme="teal" mb={4}>
+                    Create new zone
+                </Button>
+            </Link>
 
             <Heading size="md" mb={2}>Zones</Heading>
 
