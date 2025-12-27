@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Heading, Box, Text, Stack } from '@chakra-ui/react'
+import { Button, Heading, Box, Text, Stack } from '@chakra-ui/react'
 import { fetchNodes } from '../api/nodes.api'
+import { Link } from 'react-router-dom'
 
 
 
@@ -21,6 +22,12 @@ export default function DashboardPage() {
         <Box p={6}>
             <Heading mb={4}>Node Manager Dashboard</Heading>
 
+            <Link to="/nodes/new">
+                <Button colorScheme="teal" mb={4}>
+                    Create new node
+                </Button>
+            </Link>
+
             {nodes.length === 0 && (
                 <Text>No nodes found.</Text>
             )}
@@ -28,7 +35,11 @@ export default function DashboardPage() {
             <Stack spacing={3}>
                 {nodes.map((node) => (
                     <Box key={node.id} p={4} borderWidth="1px" borderRadius="md">
-                        <Text fontWeight="bold">{node.name}</Text>
+                        <Text fontWeight="bold">
+                            <Link to={`/nodes/${node.id}`} style={{ textDecoration: 'underline', color: 'blue' }}>
+                                {node.name}
+                            </Link>
+                        </Text>
                         {node.location && <Text>Location: {node.location}</Text>}
                     </Box>
                 ))}
