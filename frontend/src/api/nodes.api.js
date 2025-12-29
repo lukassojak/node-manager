@@ -16,3 +16,7 @@ export function createNode(data) {
 export function fetchZoneById(nodeId, zoneId) {
     return http.get(`/nodes/${nodeId}/zones/${zoneId}`)
 }
+
+export function createZone(nodeId, data) {
+    return http.post(`/nodes/${nodeId}/zones`, data)
+}
