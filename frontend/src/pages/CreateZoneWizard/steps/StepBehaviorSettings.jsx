@@ -14,7 +14,6 @@ function LocalCorrectionFactors({ value, onChange }) {
                     <Text mb={1}>{key}</Text>
                     <Input
                         type="number"
-                        min="0"
                         step="0.1"
                         value={value[key]}
                         onChange={(e) =>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { Stack, Box, Heading, Text } from '@chakra-ui/react'
-import { fetchZoneById } from '../api/nodes.api'
+import { Link, useParams } from 'react-router-dom'
+import { Button, Stack, Box, Heading, Text } from '@chakra-ui/react'
+import { fetchZoneById, deleteZone } from '../api/nodes.api'
 
 
 function JsonBlock({ title, data }) {
@@ -54,6 +54,27 @@ export default function ZoneDetailPage() {
             <Text><strong>ID:</strong> {zone.id}</Text>
             <Text><strong>Relay Pin:</strong> {zone.relay_pin}</Text>
             <Text><strong>Irrigation Mode:</strong> {zone.irrigation_mode}</Text>
+
+            <Button
+                colorPalette="red"
+                mb={4}
+                onClick={() => {
+                    if (!confirm('Are you sure you want to delete this zone?')) return
+
+                    deleteZone(nodeId, zoneId)
+                        .then(() => {
+                            alert('Zone deleted successfully')
+                            window.location.href = `/nodes/${nodeId}`
+                        })
+                        .catch((error) => {
+                            console.error('Failed to delete zone:', error)
+                            alert('Failed to delete zone')
+                        })
+
+                }}
+            >
+                Delete zone
+            </Button>
 
             <JsonBlock title="Irrigation Configuration" data={zone.irrigation_configuration} />
 

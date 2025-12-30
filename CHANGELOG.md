@@ -5,12 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2025-12-23
+## [0.4.0] - 2025-12-30
+
+### Added
+- Frontend MVP with polished and consistent UI
+- Node dashboard with responsive card-based layout
+- Detailed Node view with:
+  - zone overview cards
+  - correction factor indicators
+  - node configuration summary
+- Zone configuration wizard with multi-step validation
+- Advanced Create Node form with:
+  - primary and advanced configuration sections
+  - collapsible advanced settings
+  - contextual help panels for complex options
+
+### Changed
+- Refined frontend layout, spacing, and visual hierarchy
+- Improved UX clarity for node and zone configuration flows
+- Unified design language across dashboard, node, and zone views
+- Clarified separation between primary and advanced configuration options
+
+### Fixed
+- Multiple frontend state and validation edge cases
+- Navigation and routing inconsistencies in node/zone flows
+
+### Removed
+- Early prototype UI elements and temporary placeholders
+
+### Known Issues
+- Advanced configuration options are not yet editable after node creation
+- Backend validation errors are not fully surfaced in the UI
+- Zone detail page & zone configuration wizard are still not polished
+- Zone is not editable after creation
+
+---
+
+## [0.3.0] - 2025-12-28
 
 ### Added
 - Initialize frontend project structure with React and JavaScript
 - Set up basic routing
-- Implement prototype dashboard page.
+- Implement frontend prototype:
+  - dashboard page
+  - node and zone listing views
+  - node creation page
+  - zone configuration wizard interface
 
 ### Changed
 

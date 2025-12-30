@@ -20,3 +20,11 @@ export function fetchZoneById(nodeId, zoneId) {
 export function createZone(nodeId, data) {
     return http.post(`/nodes/${nodeId}/zones`, data)
 }
+
+export function deleteNode(nodeId) {
+    return http.delete(`/nodes/${nodeId}`)
+}
+
+export function deleteZone(nodeId, zoneId) {
+    return http.delete(`/nodes/${nodeId}/zones/${zoneId}`)
+}

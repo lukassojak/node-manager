@@ -81,8 +81,11 @@ class NodeService:
     
 
     def delete_zone(self, node_id: int, zone_id: int) -> bool:
+        zone = self.zone_repo.get(zone_id)
+        if not zone or zone.node_id != node_id:
+            return False
         deleted = self.zone_repo.delete(zone_id)
-        if not deleted or zone_id.node_id != node_id:
+        if not deleted:
             return False
         
         self.session.commit()
