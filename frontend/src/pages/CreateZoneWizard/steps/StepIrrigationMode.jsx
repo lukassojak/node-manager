@@ -1,39 +1,98 @@
-import { Stack, Box, Text } from "@chakra-ui/react"
+import {
+    Box,
+    Heading,
+    Text,
+    SimpleGrid,
+    Stack,
+} from "@chakra-ui/react"
+
+function ModeCard({ icon, title, description, bullets, active, onClick }) {
+    return (
+        <Box
+            onClick={onClick}
+            cursor="pointer"
+            bg={active ? "teal.50" : "bg.panel"}
+            borderWidth="2px"
+            borderColor={active ? "teal.400" : "border"}
+            borderRadius="md"
+            p={4}
+            transition="all 0.15s ease"
+            _hover={{
+                borderColor: "teal.300",
+                bg: "teal.50",
+            }}
+        >
+            <Stack spacing={3} textAlign="left">
+                <Box fontSize="2xl">
+                    {icon}
+                </Box>
+
+                <Heading size="sm">
+                    {title}
+                </Heading>
+
+                <Text fontSize="sm" color="fg.muted">
+                    {description}
+                </Text>
+
+                <Stack spacing={1} mt={2}>
+                    {bullets.map((b, i) => (
+                        <Text key={i} fontSize="sm">
+                            • {b}
+                        </Text>
+                    ))}
+                </Stack>
+            </Stack>
+        </Box>
+    )
+}
 
 export default function StepIrrigationMode({ value, onChange }) {
     return (
-        <Stack spacing={4}>
-            <Box>
-                <label style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                    <input
-                        type="radio"
-                        name="irrigation_mode"
-                        value="even_area"
-                        checked={value === "even_area"}
-                        onChange={() => onChange("even_area")}
-                    />
-                    Even area (uniform watering)
-                </label>
-            </Box>
+        <Box
+            bg="bg.panel"
+            borderWidth="1px"
+            borderColor="border"
+            borderRadius="md"
+            p={4}
+            textAlign="left"
+        >
+            <Heading size="sm" mb={4} color="teal.600">
+                Irrigation Strategy
+            </Heading>
 
-            <Box>
-                <label style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                    <input
-                        type="radio"
-                        name="irrigation_mode"
-                        value="per_plant"
-                        checked={value === "per_plant"}
-                        onChange={() => onChange("per_plant")}
-                    />
-                    Per plant (individual plants)
-                </label>
-            </Box>
+            <Text fontSize="sm" color="fg.muted" mb={4}>
+                Choose how the base irrigation volume for this zone is calculated.
+                This decision affects all following configuration steps.
+            </Text>
 
-            {!value && (
-                <Text color="gray.500">
-                    Please select an irrigation mode.
-                </Text>
-            )}
-        </Stack>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                <ModeCard
+                    icon="🌿"
+                    title="Even Area"
+                    description="Uniform irrigation over the entire zone area."
+                    bullets={[
+                        "Lawns and garden beds",
+                        "Even emitter distribution",
+                        "Volume calculated from area & depth",
+                    ]}
+                    active={value === "even_area"}
+                    onClick={() => onChange("even_area")}
+                />
+
+                <ModeCard
+                    icon="🌱"
+                    title="Per Plant"
+                    description="Individual irrigation for separate plants."
+                    bullets={[
+                        "Pots, trees, mixed crops",
+                        "Different emitters per plant",
+                        "Base volume distributed per plant",
+                    ]}
+                    active={value === "per_plant"}
+                    onClick={() => onChange("per_plant")}
+                />
+            </SimpleGrid>
+        </Box>
     )
 }

@@ -1,38 +1,108 @@
-import { Stack, Input, Text, Box } from "@chakra-ui/react"
-
+import {
+    Box,
+    Heading,
+    Text,
+    Field,
+    Input,
+    SimpleGrid,
+    Stack,
+    Separator,
+} from "@chakra-ui/react"
 
 export default function StepIrrigationEvenArea({ data, onChange }) {
-    return (
-        <Stack spacing={4}>
-            <Box>
-                <Text mb={1}>Zone area (m²) *</Text>
-                <Input
-                    type="number"
-                    min="0"
-                    value={data.zone_area_m2 ?? ""}
-                    onChange={(e) =>
-                        onChange({
-                            ...data,
-                            zone_area_m2: Number(e.target.value)
-                        })
-                    }
-                />
-            </Box>
+    const zoneArea = data.zone_area_m2 || ""
+    const targetMm = data.target_mm || ""
 
-            <Box>
-                <Text mb={1}>Target water depth (mm) *</Text>
-                <Input
-                    type="number"
-                    min="0"
-                    value={data.target_mm ?? ""}
-                    onChange={(e) =>
-                        onChange({
-                            ...data,
-                            target_mm: Number(e.target.value)
-                        })
-                    }
-                />
-            </Box>
-        </Stack>
+    const totalLiters =
+        zoneArea && targetMm
+            ? (zoneArea * targetMm).toFixed(1)
+            : null
+
+    return (
+        <Box
+            bg="bg.panel"
+            borderWidth="1px"
+            borderColor="border"
+            borderRadius="md"
+            p={4}
+            textAlign="left"
+        >
+            <Heading size="sm" mb={4} color="teal.600">
+                Even Area Irrigation
+            </Heading>
+
+            <Text fontSize="sm" color="fg.muted" mb={6}>
+                In this mode, the entire zone is irrigated evenly.
+                The system calculates the required water volume from the
+                zone area and the target water depth.
+            </Text>
+
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
+                {/* Zone area */}
+                <Field.Root required>
+                    <Field.Label>
+                        Zone area (m²) <Field.RequiredIndicator />
+                    </Field.Label>
+                    <Input
+                        type="number"
+                        min={0}
+                        step="1"
+                        placeholder="e.g. 8"
+                        value={zoneArea}
+                        onChange={(e) =>
+                            onChange({
+                                ...data,
+                                zone_area_m2: Number(e.target.value),
+                            })
+                        }
+                    />
+                    <Field.HelperText>
+                        Total irrigated surface of this zone.
+                    </Field.HelperText>
+                </Field.Root>
+
+                {/* Target depth */}
+                <Field.Root required>
+                    <Field.Label>
+                        Target water depth (mm) <Field.RequiredIndicator />
+                    </Field.Label>
+                    <Input
+                        type="number"
+                        min={0}
+                        step="1"
+                        placeholder="e.g. 20"
+                        value={targetMm}
+                        onChange={(e) =>
+                            onChange({
+                                ...data,
+                                target_mm: Number(e.target.value),
+                            })
+                        }
+                    />
+                    <Field.HelperText>
+                        Desired base water depth applied per irrigation cycle.
+                    </Field.HelperText>
+                </Field.Root>
+            </SimpleGrid>
+
+            <Separator my={6} />
+
+            {/* Calculated result */}
+            <Stack spacing={2}>
+                <Text fontSize="sm" color="fg.muted">
+                    Calculated base irrigation volume
+                </Text>
+
+                <Text fontSize="lg" fontWeight="semibold">
+                    {totalLiters
+                        ? `${totalLiters} liters`
+                        : "—"}
+                </Text>
+
+                <Text fontSize="xs" color="fg.subtle">
+                    Calculated as: area × depth (1 mm = 1 liter per m²)
+                </Text>
+            </Stack>
+        </Box>
     )
 }

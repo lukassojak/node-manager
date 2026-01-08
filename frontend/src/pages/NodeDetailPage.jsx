@@ -8,6 +8,8 @@ import {
     Text,
     HStack,
     SimpleGrid,
+    DataList,
+    Badge
 } from "@chakra-ui/react"
 import { fetchNodeById, deleteNode } from "../api/nodes.api"
 
@@ -92,6 +94,13 @@ export default function NodeDetailPage() {
                     >
                         Delete node
                     </Button>
+
+                    <Button
+                        as={Link}
+                        to="/"
+                    >
+                        Back to Dashboard
+                    </Button>
                 </HStack>
             </HStack>
 
@@ -146,26 +155,51 @@ export default function NodeDetailPage() {
                 </Heading>
 
                 <SimpleGrid columns={{ base: 1, md: 2 }} gap={3}>
-                    <Text fontSize="sm" color="fg.muted">
-                        Automation: {node.automation.enabled ? "Enabled" : "Disabled"}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                        Scheduled time: {node.automation.enabled ? `${String(node.automation.scheduled_hour).padStart(2, '0')}:${String(node.automation.scheduled_minute).padStart(2, '0')}` : "N/A"}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                        Batch strategy: {node.batch_strategy.concurrent_irrigation ? "Concurrent irrigation" : "Sequential irrigation"}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                        Flow control: {node.batch_strategy.flow_control ? "Enabled" : "Disabled"}
-                    </Text>
-                    {/*
-                    <Text fontSize="sm" color="fg.muted">
-                        Input pins: {node.hardware.input_pins.length}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                        Output pins: {node.hardware.output_pins.length}
-                    </Text>
-                    */}
+                    <DataList.Root orientation="horizontal" spacing={6}>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Automation</DataList.ItemLabel>
+                            <DataList.ItemValue>
+                                {/* Use badge colors for enabled/disabled */}
+                                {node.automation.enabled ? (
+                                    <Badge colorPalette="green">Enabled</Badge>
+                                ) : (
+                                    <Badge colorPalette="red">Disabled</Badge>
+                                )}
+                            </DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Scheduled Time</DataList.ItemLabel>
+                            <DataList.ItemValue>
+                                {node.automation.enabled
+                                    ? `${String(node.automation.scheduled_hour).padStart(2, '0')}:${String(node.automation.scheduled_minute).padStart(2, '0')}`
+                                    : "N/A"}
+                            </DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Batch Strategy</DataList.ItemLabel>
+                            <DataList.ItemValue>
+                                {node.batch_strategy.concurrent_irrigation
+                                    ? "Concurrent irrigation"
+                                    : "Sequential irrigation"}
+                            </DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Flow Control</DataList.ItemLabel>
+                            <DataList.ItemValue>
+                                {node.batch_strategy.flow_control ? "Enabled" : "Disabled"}
+                            </DataList.ItemValue>
+                        </DataList.Item>
+                        {/*
+                        <DataList.Item>
+                            <DataList.ItemLabel>Input Pins</DataList.ItemLabel>
+                            <DataList.ItemValue>{node.hardware.input_pins.length}</DataList.ItemValue>
+                        </DataList.Item>
+                        <DataList.Item>
+                            <DataList.ItemLabel>Output Pins</DataList.ItemLabel>
+                            <DataList.ItemValue>{node.hardware.output_pins.length}</DataList.ItemValue>
+                        </DataList.Item>
+                        */}
+                    </DataList.Root>
                 </SimpleGrid>
             </Box>
 
@@ -246,36 +280,20 @@ export default function NodeDetailPage() {
 
                                         {/* Status row */}
                                         <HStack spacing={3} mt={2}>
-                                            <Box
-                                                px={2}
-                                                py={1}
-                                                borderRadius="sm"
-                                                bg={zone.enabled ? "bg.success" : "bg.error"}
-                                            >
-                                                <Text
-                                                    fontSize="xs"
-                                                    color={zone.enabled ? "fg.success" : "fg.error"}
-                                                >
-                                                    {zone.enabled ? "Enabled" : "Disabled"}
-                                                </Text>
-                                            </Box>
-
-                                            <Box
-                                                px={2}
-                                                py={1}
-                                                borderRadius="sm"
-                                                bg={
-                                                    zone.irrigation_mode === "per_plant"
-                                                        ? "teal.50"
-                                                        : "bg.subtle"
+                                            <Badge
+                                                colorPalette={
+                                                    zone.enabled ? "green" : "red"
                                                 }
                                             >
-                                                <Text fontSize="xs" color="fg">
-                                                    {zone.irrigation_mode === "per_plant"
-                                                        ? "Per plant"
-                                                        : "Even area"}
-                                                </Text>
-                                            </Box>
+                                                {zone.enabled ? "Enabled" : "Disabled"}
+                                            </Badge>
+
+                                            {/* Even area / per plant mode */}
+                                            <Badge colorPalette="teal">
+                                                {zone.irrigation_mode === "even_area"
+                                                    ? "Even Area"
+                                                    : "Per Plant"}
+                                            </Badge>
                                         </HStack>
 
                                         {/* Technical info */}

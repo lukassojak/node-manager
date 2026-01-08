@@ -1,21 +1,43 @@
-import { Box, Button, Input, Stack, Text } from "@chakra-ui/react"
+import {
+    Box,
+    Heading,
+    Text,
+    Field,
+    Input,
+    Stack,
+    HStack,
+    Button,
+    Badge,
+    SimpleGrid,
+    Progress,
+    Separator,
+} from "@chakra-ui/react"
 
+const EMITTER_PRESETS = [
+    { type: "dripper", label: "Dripper", icon: "💧" },
+    { type: "soaker_hose", label: "Soaker hose", icon: "〰️" },
+    { type: "micro_spray", label: "Micro spray", icon: "🌫️" },
+]
 
 export default function StepEmittersEvenArea({ data, onChange }) {
     const emitters = data.summary || []
 
-    const addEmitter = () => {
+    const updateEmitter = (index, updated) => {
+        const next = [...emitters]
+        next[index] = updated
+        onChange({ summary: next })
+    }
+
+    const addEmitter = (type) => {
         onChange({
             summary: [
                 ...emitters,
-                { type: "", flow_rate_lph: 0, count: 1 },
+                {
+                    type,
+                    flow_rate_lph: type === "dripper" ? 2 : 10,
+                    count: 1,
+                },
             ],
-        })
-    }
-
-    const updateEmitter = (index, updated) => {
-        onChange({
-            summary: emitters.map((e, i) => (i === index ? updated : e)),
         })
     }
 
@@ -25,70 +47,162 @@ export default function StepEmittersEvenArea({ data, onChange }) {
         })
     }
 
+    const totalFlow = emitters.reduce(
+        (sum, e) =>
+            sum +
+            (e.type === "soaker_hose"
+                ? e.flow_rate_lph || 0
+                : (e.flow_rate_lph || 0) * (e.count || 0)),
+        0
+    )
+
     return (
-        <Stack spacing={4}>
-            {emitters.map((emitter, index) => (
-                <Box key={index} p={3} borderWidth="1px" borderRadius="md">
-                    <Stack spacing={2}>
-                        <Text fontWeight="semibold">Emitter {index + 1}</Text>
-                        <Box>
-                            <Text mb={1}>Type *</Text>
-                            <Input
-                                placeholder="Emitter type"
-                                value={emitter.type}
-                                onChange={(e) =>
-                                    updateEmitter(index, {
-                                        ...emitter,
-                                        type: e.target.value,
-                                    })
-                                }
-                            />
-                        </Box>
+        <Box
+            bg="bg.panel"
+            borderWidth="1px"
+            borderColor="border"
+            borderRadius="md"
+            p={4}
+            textAlign="left"
+        >
+            <Heading size="sm" mb={2} color="teal.600">
+                Emitters configuration
+            </Heading>
 
-                        <Box>
-                            <Text mb={1}>Flow rate (l/h) *</Text>
-                            <Input
-                                type="number"
-                                min="0"
-                                placeholder="Flow rate (l/h)"
-                                value={emitter.flow_rate_lph}
-                                onChange={(e) =>
-                                    updateEmitter(index, {
-                                        ...emitter,
-                                        flow_rate_lph: Number(e.target.value),
-                                    })
-                                }
-                            />
-                        </Box>
+            <Text fontSize="sm" color="fg.muted" mb={6}>
+                Define the emitters used across this zone. The system assumes
+                these emitters are distributed evenly over the irrigated area.
+            </Text>
 
-                        <Box>
-                            <Text mb={1}>Count *</Text>
-                            <Input
-                                type="number"
-                                min="1"
-                                placeholder="Count"
-                                value={emitter.count}
-                                onChange={(e) =>
-                                    updateEmitter(index, {
-                                        ...emitter,
-                                        count: Number(e.target.value),
-                                    })
-                                }
-                            />
-                        </Box>
+            {/* Add emitter buttons */}
+            <HStack spacing={3} mb={6}>
+                {EMITTER_PRESETS.map((preset) => (
+                    <Button
+                        key={preset.type}
+                        variant="outline"
+                        onClick={() => addEmitter(preset.type)}
+                    >
+                        {preset.icon} Add {preset.label}
+                    </Button>
+                ))}
+            </HStack>
 
-                        <Button
-                            size="sm"
-                            colorPalette="red"
-                            onClick={() => removeEmitter(index)}
+            {/* Emitters grid */}
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                {emitters.map((emitter, index) => {
+                    const flow =
+                        emitter.type === "soaker_hose"
+                            ? emitter.flow_rate_lph || 0
+                            : (emitter.flow_rate_lph || 0) * (emitter.count || 0)
+
+                    const share =
+                        totalFlow > 0 ? Math.round((flow / totalFlow) * 100) : 0
+
+                    return (
+                        <Box
+                            key={index}
+                            p={4}
+                            borderRadius="lg"
+                            bg="bg.panel"
+                            boxShadow="sm"
+                            borderWidth="1px"
+                            borderColor="border.subtle"
                         >
-                            Remove
-                        </Button>
-                    </Stack>
-                </Box>
-            ))}
+                            {/* Header */}
+                            <HStack justify="space-between" mb={3}>
+                                <HStack spacing={3}>
+                                    <Box fontSize="xl">
+                                        {emitter.type === "dripper" && "💧"}
+                                        {emitter.type === "soaker_hose" && "〰️"}
+                                        {emitter.type === "micro_spray" && "🌫️"}
+                                    </Box>
+                                    <Badge variant="subtle">
+                                        {emitter.type}
+                                    </Badge>
+                                </HStack>
 
-            <Button onClick={addEmitter}>Add emitter</Button>
-        </Stack>
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    colorPalette="red"
+                                    onClick={() => removeEmitter(index)}
+                                >
+                                    Remove
+                                </Button>
+                            </HStack>
+
+                            <Stack spacing={3}>
+                                <HStack spacing={3}>
+                                    <Field.Root>
+                                        <Field.Label>Flow rate (l/h)</Field.Label>
+                                        <Input
+                                            type="number"
+                                            step="0.5"
+                                            value={emitter.flow_rate_lph}
+                                            onChange={(e) =>
+                                                updateEmitter(index, {
+                                                    ...emitter,
+                                                    flow_rate_lph: Number(e.target.value),
+                                                })
+                                            }
+                                        />
+                                    </Field.Root>
+
+                                    {emitter.type !== "soaker_hose" && (
+                                        <Field.Root>
+                                            <Field.Label>Count</Field.Label>
+                                            <Input
+                                                type="number"
+                                                min={1}
+                                                value={emitter.count}
+                                                onChange={(e) =>
+                                                    updateEmitter(index, {
+                                                        ...emitter,
+                                                        count: Number(e.target.value),
+                                                    })
+                                                }
+                                            />
+                                        </Field.Root>
+                                    )}
+                                </HStack>
+
+                                <Box>
+                                    <Text fontSize="xs" color="fg.muted" mb={1}>
+                                        Share of zone flow
+                                    </Text>
+                                    <Progress.Root
+                                        value={share}
+                                        size="sm"
+                                        colorPalette="teal"
+                                    >
+                                        <Progress.Track>
+                                            <Progress.Range />
+                                        </Progress.Track>
+                                    </Progress.Root>
+                                    <Text fontSize="xs" color="fg.subtle" mt={1}>
+                                        {flow.toFixed(1)} l/h ({share}%)
+                                    </Text>
+                                </Box>
+                            </Stack>
+                        </Box>
+                    )
+                })}
+            </SimpleGrid>
+
+            <Separator my={6} />
+
+            {/* Total flow */}
+            <Stack spacing={1}>
+                <Text fontSize="sm" color="fg.muted">
+                    Total zone flow
+                </Text>
+                <Text fontSize="lg" fontWeight="semibold">
+                    {totalFlow.toFixed(1)} l/h
+                </Text>
+                <Text fontSize="xs" color="fg.subtle">
+                    Sum of all emitter flows in this zone
+                </Text>
+            </Stack>
+        </Box>
     )
 }

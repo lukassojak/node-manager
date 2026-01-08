@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-01-01
+
+### Added
+- Fully implemented Zone Configuration Wizard:
+  - irrigation mode selection (even-area / per-plant)
+  - irrigation target configuration
+  - visual emitters editor with flow distribution
+  - behavior & scheduling step with dynamic interval timeline
+  - contextual help panels synchronized with wizard steps
+- Per-plant irrigation editor with plant-level emitter configuration
+- Visual irrigation decision timeline for frequency settings
+- Improved frontend validation aligned with backend domain rules
+
+### Changed
+- Finalized frontend MVP with consistent UI
+- Improved wizard state management to prevent invalid mixed configurations
+- Refined UX for complex configuration flows (zones, emitters, behavior)
+- Strengthened frontend–backend contract for zone creation
+
+### Fixed
+- Invalid zone payloads caused by switching irrigation modes mid-wizard
+- Frontend rendering errors caused by inconsistent irrigation configuration
+- Multiple edge cases in wizard navigation and validation
+
+### Known Issues
+- Relay valve pin ids are not validated for uniqueness across zones
+- Nodes and zones cannot be edited after creation
+- System-level (global) configuration is not yet exposed in the UI
+- Backend error details are only partially surfaced in frontend notifications
+
+---
+
+
 ## [0.4.0] - 2025-12-30
 
 ### Added
@@ -37,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Advanced configuration options are not yet editable after node creation
 - Backend validation errors are not fully surfaced in the UI
 - Zone detail page & zone configuration wizard are still not polished
-- Zone is not editable after creation
+- Node and zone is not editable after creation
 
 ---
 

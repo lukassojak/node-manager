@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { For, SegmentGroup, Switch, Field, Text, Box, Heading, Input, Button, Stack, SimpleGrid, HStack } from "@chakra-ui/react"
 import { createNode } from "../api/nodes.api"
 
@@ -21,7 +21,7 @@ export default function CreateNodePage() {
     const [mainValveMaxFlow, setMainValveMaxFlow] = useState(null)
     const [weatherCacheInterval, setWeatherCacheInterval] = useState(30)
     const [weatherCacheExpiry, setWeatherCacheExpiry] = useState(2)
-    const [flowControlEnabled, setFlowControlEnabled] = useState(true)
+    const [flowControlEnabled, setFlowControlEnabled] = useState(false)
     const [maxConcurrentZones, setMaxConcurrentZones] = useState(null)
     const [maxTotalIrrigationTime, setMaxTotalIrrigationTime] = useState(null)
 
@@ -54,9 +54,9 @@ export default function CreateNodePage() {
             },
             batch_strategy: {
                 concurrent_irrigation: concurrentIrrigation,
-                flow_control: true,
-                max_concurrent_zones: null,
-                max_total_irrigation_time_minutes: null,
+                flow_control: flowControlEnabled,
+                max_concurrent_zones: maxConcurrentZones,
+                max_total_irrigation_time_minutes: maxTotalIrrigationTime,
             },
             logging: {
                 enabled: true,
@@ -86,7 +86,8 @@ export default function CreateNodePage() {
                     </Text>
                 </Stack>
                 <Button
-                    onClick={() => navigate(-1)}
+                    as={Link}
+                    to={`/`}
                 >
                     Cancel
                 </Button>
@@ -297,19 +298,22 @@ export default function CreateNodePage() {
                                         </Field.Root>
                                     </HStack>
                                     <Field.Root>
-                                        <Field.Label>Main Valve Max Flow (L/min)</Field.Label>
+                                        <Field.Label>Water Supply Max Flow (L/min)</Field.Label>
                                         <Input
                                             type="number"
                                             step="100"
                                             value={mainValveMaxFlow || ""}
                                             onChange={(e) => {
                                                 const val = e.target.value
+                                                if (val === "") {
+                                                    setFlowControlEnabled(false)
+                                                }
                                                 setMainValveMaxFlow(val ? Number(val) : null)
                                             }}
                                             placeholder="Leave blank for no limit"
                                         />
                                         <Field.HelperText>
-                                            Maximum flow rate for the main valve in liters per minute. Leave blank for no limit.
+                                            Maximum flow rate in liters per minute for the water supply of this node.
                                         </Field.HelperText>
                                         <Field.ErrorText>
                                             Invalid flow rate.
@@ -329,11 +333,11 @@ export default function CreateNodePage() {
                                 <Heading size="sm" mb={4} color="teal.600">
                                     Weather Fetching Settings
                                 </Heading>
+                                <Text fontSize="sm" color="fg.muted" mb={6}>
+                                    These settings control how often weather data is fetched and how long it is cached.
+                                    Default values are applied upon node creation and can be modified later.
+                                </Text>
                                 <Stack spacing={4} gap={6}>
-                                    <Text fontSize="sm" color="fg.muted">
-                                        These settings control how often weather data is fetched and how long it is cached.
-                                        Default values are applied upon node creation and can be modified later.
-                                    </Text>
                                     <HStack justify="space-between" align="flex-start">
                                         <Field.Root required>
                                             <Field.Label>Weather Cache Interval <Field.RequiredIndicator /></Field.Label>
@@ -386,6 +390,7 @@ export default function CreateNodePage() {
                                         <Switch.Root
                                             checked={flowControlEnabled}
                                             onChange={(checked) => setFlowControlEnabled(!flowControlEnabled)}
+                                            disabled={mainValveMaxFlow === null}
                                         >
                                             <Switch.HiddenInput />
                                             <Switch.Control>
@@ -395,8 +400,13 @@ export default function CreateNodePage() {
                                                 {flowControlEnabled ? "Enabled" : "Disabled"}
                                             </Switch.Label>
                                         </Switch.Root>
+                                        {/* Change helper text if disabled due to no main valve flow limit */}
                                         <Field.HelperText>
-                                            Enable flow control to manage water pressure during concurrent irrigation.
+                                            {mainValveMaxFlow === null
+                                                ? "Set a Water Supply Max Flow to enable flow control."
+                                                : "Enable to manage water pressure during concurrent irrigation to stay within water supply limits."
+                                            }
+
                                         </Field.HelperText>
                                     </Field.Root>
 
@@ -421,7 +431,7 @@ export default function CreateNodePage() {
                                             <Field.Label>Max Total Irrigation Time</Field.Label>
                                             <Input
                                                 type="number"
-                                                step="5"
+                                                step="30"
                                                 value={maxTotalIrrigationTime || ""}
                                                 onChange={(e) => {
                                                     const val = e.target.value
@@ -519,14 +529,14 @@ export default function CreateNodePage() {
                                 bg="teal.800"
                                 display="inline-block"
                             >
-                                <Text fontSize="xs" color="whiteAlpha.700" fontWeight="semibold">
+                                <Text fontSize="xs" color="whiteAlpha.800" fontWeight="semibold">
                                     Advanced
                                 </Text>
                             </Box>
                             <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
                                 How to configure irrigation limits?
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.700">
+                            <Text fontSize="sm" color="whiteAlpha.800">
                                 Irrigation limits define <strong>safe boundaries for how much water can be applied</strong> during a single irrigation cycle.
 
                                 These limits act as a protection layer when weather-based calculations would otherwise produce extremely low or high irrigation volumes.
@@ -548,9 +558,9 @@ export default function CreateNodePage() {
                                 </Text>
                             </Box>
                             <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
-                                Main Valve Flow Limit
+                                Water Supply Max Flow
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.700">
+                            <Text fontSize="sm" color="whiteAlpha.800">
                                 This setting represents a <strong>physical limitation of your water supply connection</strong>.
 
                                 When multiple zones are irrigated concurrently, the system ensures that the total water flow does not exceed this limit.
@@ -576,7 +586,7 @@ export default function CreateNodePage() {
                             <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
                                 What are weather cache settings?
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.700">
+                            <Text fontSize="sm" color="whiteAlpha.800">
                                 These settings control how often new weather data is fetched and how long it is considered valid.
                                 Longer cache durations improve system stability, while shorter intervals provide more up-to-date adjustments.
                             </Text>
@@ -599,7 +609,7 @@ export default function CreateNodePage() {
                             <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
                                 Flow Control in Batch Strategy
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.700">
+                            <Text fontSize="sm" color="whiteAlpha.800">
                                 Enabling flow control <strong>helps manage water pressure when irrigating multiple zones concurrently</strong>.
                                 It dynamically adjusts valve openings to ensure the total flow remains within safe limits.
                             </Text>

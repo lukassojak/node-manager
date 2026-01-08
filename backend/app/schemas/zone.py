@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 
 from app.schemas.irrigation import (
     LocalCorrectionFactors,
@@ -41,6 +41,20 @@ class ZoneCreate(BaseModel):
     fallback_strategy: FallbackStrategy
     irrigation_configuration: IrrigationConfigurationEvenArea | IrrigationConfigurationPerPlant
     emitters_configuration: EmittersConfigurationEvenArea | EmittersConfigurationPerPlant
+
+    @model_validator(mode="after")
+    def check_configuration_consistency(cls, model):
+        if model.irrigation_mode == IrrigationMode.EVEN_AREA:
+            if not isinstance(model.irrigation_configuration, IrrigationConfigurationEvenArea):
+                raise ValueError("Irrigation configuration must be of type Even Area for EVEN_AREA mode.")
+            if not isinstance(model.emitters_configuration, EmittersConfigurationEvenArea):
+                raise ValueError("Emitters configuration must be of type Even Area for EVEN_AREA mode.")
+        elif model.irrigation_mode == IrrigationMode.PER_PLANT:
+            if not isinstance(model.irrigation_configuration, IrrigationConfigurationPerPlant):
+                raise ValueError("Irrigation configuration must be of type Per Plant for PER_PLANT mode.")
+            if not isinstance(model.emitters_configuration, EmittersConfigurationPerPlant):
+                raise ValueError("Emitters configuration must be of type Per Plant for PER_PLANT mode.")
+        return model
 
 
 class ZoneUpdate(BaseModel):

@@ -1,209 +1,470 @@
-import { Box, Stack, Text, Input } from "@chakra-ui/react"
+import {
+    For,
+    Box,
+    Heading,
+    Text,
+    Stack,
+    SimpleGrid,
+    Field,
+    Badge,
+    Switch,
+    NumberInput,
+    Slider,
+    SegmentGroup,
+    HStack,
+} from "@chakra-ui/react"
 
-
-function LocalCorrectionFactors({ value, onChange }) {
-    return (
-        <Stack spacing={3}>
-            <Text fontWeight="bold">Local correction factors</Text>
-            <Text fontSize="sm" color="gray.600">
-                Multipliers applied on top of weather-based adjustments.
-            </Text>
-
-            {["solar", "rain", "temperature"].map((key) => (
-                <Box key={key}>
-                    <Text mb={1}>{key}</Text>
-                    <Input
-                        type="number"
-                        step="0.1"
-                        value={value[key]}
-                        onChange={(e) =>
-                            onChange({
-                                ...value,
-                                [key]: Number(e.target.value),
-                            })
-                        }
-                    />
-                </Box>
-            ))}
-        </Stack>
-    )
-}
-
-
-function FrequencySettings({ value, onChange }) {
-    return (
-        <Stack spacing={3}>
-            <Text fontWeight="bold">Frequency settings</Text>
-            <Text fontSize="sm" color="gray.600">
-                Configure how often irrigation should occur, whether irrigation
-                intervals should be dynamic, and how to handle unused water volume.
-            </Text>
-            <label>
-                <input
-                    type="checkbox"
-                    checked={value.dynamic_interval}
-                    onChange={(e) =>
-                        onChange({
-                            ...value,
-                            dynamic_interval: e.target.checked,
-                        })
-                    }
-                />{" "}
-                Dynamic interval
-            </label>
-
-            <Box>
-                <Text mb={1}>Min interval (days)</Text>
-                <Input
-                    type="number"
-                    min="1"
-                    max="30"
-                    value={value.min_interval_days}
-                    onChange={(e) =>
-                        onChange({
-                            ...value,
-                            min_interval_days: Number(e.target.value),
-                        })
-                    }
-                />
-            </Box>
-
-            <Box>
-                <Text mb={1}>Max interval (days)</Text>
-                <Input
-                    type="number"
-                    min="1"
-                    max="30"
-                    value={value.max_interval_days}
-                    onChange={(e) =>
-                        onChange({
-                            ...value,
-                            max_interval_days: Number(e.target.value),
-                        })
-                    }
-                />
-            </Box>
-
-            <label>
-                <input
-                    type="checkbox"
-                    checked={value.carry_over_volume}
-                    onChange={(e) =>
-                        onChange({
-                            ...value,
-                            carry_over_volume: e.target.checked,
-                        })
-                    }
-                />{" "}
-                Carry over unused water volume
-            </label>
-
-            <Box>
-                <Text mb={1}>Irrigation volume threshold (%)</Text>
-                <Input
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="5"
-                    value={value.irrigation_volume_threshold_percent}
-                    onChange={(e) =>
-                        onChange({
-                            ...value,
-                            irrigation_volume_threshold_percent: Number(e.target.value),
-                        })
-                    }
-                />
-            </Box>
-        </Stack>
-    )
-}
-
-
-function FallbackStrategy({ value, onChange }) {
-    const simple_fallback_options = [
-        { value: "use_base_volume", label: "Use base volume" },
-        { value: "use_half_base_volume", label: "Use half base volume" },
-        { value: "skip_irrigation", label: "Skip irrigation" },
-    ]
-
-    const full_fallback_options = [
-        ...simple_fallback_options,
-        { value: "use_cached_data", label: "Use cached weather data" },
-    ]
-
-    return (
-        <Stack spacing={3}>
-            <Text fontWeight="bold">Fallback strategy</Text>
-            <Text fontSize="sm" color="gray.600">
-                Define how to handle situations when weather data is unavailable
-                or expired.
-            </Text>
-            {[
-                ["on_fresh_weather_data_unavailable", "Fresh data unavailable"],
-                ["on_expired_weather_data", "Expired weather data"],
-                ["on_missing_weather_data", "Missing weather data"],
-            ].map(([key, label]) => (
-                <Box key={key}>
-                    <Text mb={1}>{label}</Text>
-                    <select
-                        value={value[key]}
-                        onChange={(e) =>
-                            onChange({
-                                ...value,
-                                [key]: e.target.value,
-                            })
-                        }
-                    >
-                        {(key === "on_missing_weather_data"
-                            ? simple_fallback_options
-                            : full_fallback_options
-                        ).map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </Box>
-            ))}
-        </Stack>
-    )
-}
-
+import FrequencyTimeline from "../../../components/FrequencyTimeline"
 
 export default function StepBehaviorSettings({ data, onChange }) {
+    const {
+        local_correction_factors,
+        frequency_settings,
+        fallback_strategy,
+    } = data
+
+    const updateFrequency = (partial) => {
+        onChange({
+            frequency_settings: {
+                ...frequency_settings,
+                ...partial,
+            },
+        })
+    }
+
+    const updateCorrections = (partial) => {
+        onChange({
+            local_correction_factors: {
+                ...local_correction_factors,
+                ...partial,
+            },
+        })
+    }
+
+    const updateFallback = (partial) => {
+        onChange({
+            fallback_strategy: {
+                ...fallback_strategy,
+                ...partial,
+            },
+        })
+    }
+
+    {/* Define items - all fallback strategies for different scenarios */ }
+    const fullFallbackItems = [
+        {
+            label: "Use cached data",
+            value: "use_cached_data",
+        },
+        {
+            label: "Use base volume",
+            value: "use_base_volume",
+        },
+        {
+            label: "Use half of base volume",
+            value: "use_half_base_volume",
+        },
+        {
+            label: "Skip irrigation",
+            value: "skip_irrigation",
+        },
+    ]
+
+    {/* Define items - limited fallback strategies for missing weather data */ }
+    const limitedFallbackItems = [
+        {
+            label: "Use base volume",
+            value: "use_base_volume",
+        },
+        {
+            label: "Use half of base volume",
+            value: "use_half_base_volume",
+        },
+        {
+            label: "Skip irrigation",
+            value: "skip_irrigation",
+        },
+    ]
+
     return (
-        <Stack spacing={6}>
-            <Box p={3} borderWidth="1px" borderRadius="md">
-                <LocalCorrectionFactors
-                    value={data.local_correction_factors}
-                    onChange={(updated) =>
-                        onChange({
-                            local_correction_factors: updated,
-                        })
-                    }
-                />
+        <Stack spacing={8} gap={10}>
+            {/* ======================================================
+                SECTION: Frequency & Scheduling
+            ====================================================== */}
+            <Box
+                bg="bg.panel"
+                borderWidth="1px"
+                borderColor="border"
+                borderRadius="md"
+                textAlign="left"
+                p={4}
+            >
+                <Heading size="sm" mb={4} color="teal.600">
+                    Frequency & Scheduling
+                </Heading>
+
+                <Text fontSize="sm" color="fg.muted" mb={6}>
+                    Define how often this zone is allowed to irrigate and how
+                    strictly the system follows the schedule.
+                </Text>
+
+                <Stack spacing={6} gap={6}>
+                    {/* Dynamic interval switch */}
+                    <Field.Root colorPalette="teal">
+                        <Field.Label>Dynamic irrigation interval</Field.Label>
+                        <Switch.Root
+                            checked={frequency_settings.dynamic_interval}
+                            onCheckedChange={(e) =>
+                                updateFrequency({ dynamic_interval: e.checked })
+                            }
+                        >
+                            <Switch.HiddenInput />
+                            <Switch.Control>
+                                <Switch.Thumb />
+                            </Switch.Control>
+                            <Switch.Label>
+                                {frequency_settings.dynamic_interval
+                                    ? "Enabled"
+                                    : "Disabled"}
+                            </Switch.Label>
+                        </Switch.Root>
+
+                        <Field.HelperText>
+                            When enabled, the system dynamically decides the
+                            irrigation day based on weather conditions and
+                            calculated water demand.
+                        </Field.HelperText>
+                    </Field.Root>
+
+                    {/* Dynamic vs fixed interval */}
+                    {frequency_settings.dynamic_interval ? (
+
+                        <Box>
+                            <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
+                                <Field.Root>
+                                    <Field.Label>
+                                        Minimum interval (days)
+                                    </Field.Label>
+                                    <NumberInput.Root
+                                        value={String(
+                                            frequency_settings.min_interval_days
+                                        )}
+                                        min={1}
+                                        max={
+                                            frequency_settings.max_interval_days
+                                        }
+                                        onValueChange={(e) =>
+                                            updateFrequency({
+                                                min_interval_days: Number(e.value),
+                                            })
+                                        }
+                                    >
+                                        <NumberInput.Control />
+                                        <NumberInput.Input />
+                                    </NumberInput.Root>
+                                    <Field.HelperText>
+                                        Earliest possible day the zone may irrigate.
+                                    </Field.HelperText>
+                                </Field.Root>
+                                <Field.Root>
+                                    <Field.Label>
+                                        Maximum interval (days)
+                                    </Field.Label>
+                                    <NumberInput.Root
+                                        value={String(
+                                            frequency_settings.max_interval_days
+                                        )}
+                                        min={
+                                            frequency_settings.min_interval_days
+                                        }
+                                        max={29}
+                                        onValueChange={(e) =>
+                                            updateFrequency({
+                                                max_interval_days: Number(e.value),
+                                            })
+                                        }
+                                    >
+                                        <NumberInput.Control />
+                                        <NumberInput.Input />
+                                    </NumberInput.Root>
+                                    <Field.HelperText>
+                                        Latest day irrigation will be forced if
+                                        skipped before.
+                                    </Field.HelperText>
+                                </Field.Root>
+                            </SimpleGrid>
+
+                            {frequency_settings.min_interval_days === frequency_settings.max_interval_days && (
+                                <Text fontSize="sm" color="fg.warning" mt={2}>
+                                    Minimum and maximum intervals are equal. This effectively disables dynamic scheduling.
+                                </Text>
+                            )}
+                        </Box>
+                    ) : (
+                        <Field.Root>
+                            <Field.Label>Fixed interval (days)</Field.Label>
+                            <NumberInput.Root
+                                value={String(
+                                    frequency_settings.min_interval_days
+                                )}
+                                min={1}
+                                max={29}
+                                onValueChange={(e) =>
+                                    updateFrequency({
+                                        min_interval_days: Number(e.value),
+                                    })
+                                }
+                            >
+                                <NumberInput.Control />
+                                <NumberInput.Input />
+                            </NumberInput.Root>
+                            <Field.HelperText>
+                                Irrigation will run strictly every N days.
+                            </Field.HelperText>
+                        </Field.Root>
+                    )}
+
+                    {/* Carry-over & threshold */}
+                    {frequency_settings.dynamic_interval && (
+                        <>
+                            <Field.Root colorPalette="teal">
+                                <Field.Label>
+                                    Carry-over skipped volume
+                                </Field.Label>
+                                <Switch.Root
+                                    checked={
+                                        frequency_settings.carry_over_volume
+                                    }
+                                    onCheckedChange={(e) =>
+                                        updateFrequency({
+                                            carry_over_volume: e.checked,
+                                        })
+                                    }
+                                >
+                                    <Switch.HiddenInput />
+                                    <Switch.Control>
+                                        <Switch.Thumb />
+                                    </Switch.Control>
+                                    <Switch.Label>
+                                        {frequency_settings.carry_over_volume
+                                            ? "Enabled"
+                                            : "Disabled"}
+                                    </Switch.Label>
+                                </Switch.Root>
+                                <Field.HelperText>
+                                    Accumulate skipped irrigation volume and add
+                                    it to the next cycle.
+                                </Field.HelperText>
+                            </Field.Root>
+
+                            <Field.Root>
+                                <Slider.Root
+                                    width="100%"
+                                    maxW="400px"
+                                    value={[
+                                        frequency_settings.irrigation_volume_threshold_percent,
+                                    ]}
+                                    min={5}
+                                    max={95}
+                                    step={5}
+                                    colorPalette="teal"
+                                    onValueChange={(e) =>
+                                        updateFrequency({
+                                            irrigation_volume_threshold_percent:
+                                                e.value[0],
+                                        })
+                                    }
+                                >
+                                    <HStack justify="space-between" mb={2}>
+                                        <Field.Label>
+                                            Irrigation volume threshold (%)
+                                        </Field.Label>
+                                        <Slider.ValueText />
+                                    </HStack>
+                                    <Slider.Control>
+                                        <Slider.Track>
+                                            <Slider.Range />
+                                        </Slider.Track>
+                                        <Slider.Thumbs />
+                                    </Slider.Control>
+                                </Slider.Root>
+
+                                <Field.HelperText>
+                                    Skip irrigation if calculated volume is too
+                                    small to be meaningful.
+                                </Field.HelperText>
+                            </Field.Root>
+                        </>
+                    )}
+
+                    {/* Timeline */}
+                    {frequency_settings.dynamic_interval && (
+                        <FrequencyTimeline
+                            settings={frequency_settings}
+                        />
+                    )}
+                </Stack>
             </Box>
 
-            <Box p={3} borderWidth="1px" borderRadius="md">
-                <FrequencySettings
-                    value={data.frequency_settings}
-                    onChange={(updated) =>
-                        onChange({
-                            frequency_settings: updated,
-                        })
-                    }
-                />
+            {/* ======================================================
+                SECTION: Local Weather Corrections
+            ====================================================== */}
+            <Box
+                bg="bg.panel"
+                borderWidth="1px"
+                borderColor="border"
+                borderRadius="md"
+                p={4}
+                textAlign="left"
+            >
+                <Heading size="sm" mb={4} color="teal.600">
+                    Local Weather Corrections
+                </Heading>
+
+                <Text fontSize="sm" color="fg.muted" mb={6}>
+                    Fine-tune how strongly different weather conditions affect
+                    irrigation volume for this zone.
+                </Text>
+
+                <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+                    {[
+                        { key: "solar", label: "Solar" },
+                        { key: "rain", label: "Rain" },
+                        { key: "temperature", label: "Temperature" },
+                    ].map(({ key, label }) => (
+                        <Field.Root key={key}>
+                            <Field.Label>{label}</Field.Label>
+
+                            <Slider.Root
+                                width="100%"
+                                maxW="300px"
+                                min={-1}
+                                max={1}
+                                step={0.05}
+                                value={[local_correction_factors[key]]}
+                                onValueChange={(e) =>
+                                    updateCorrections({
+                                        [key]: e.value[0],
+                                    })
+                                }
+                            >
+                                <Slider.Control>
+                                    <Slider.Track bg="gray.200">
+                                        <Slider.Range bg="transparent" />
+                                    </Slider.Track>
+                                    <Slider.Thumbs borderColor="teal.600" />
+                                </Slider.Control>
+                            </Slider.Root>
+
+                            <HStack justify="space-between" width="100%" maxW="300px" mt={2}>
+                                <Text fontSize="xs" color="fg.subtle">Reduce</Text>
+                                <Text fontSize="sm" fontWeight="medium">
+                                    {local_correction_factors[key].toFixed(2)}
+                                </Text>
+                                <Text fontSize="xs" color="fg.subtle">Amplify</Text>
+                            </HStack>
+                        </Field.Root>
+                    ))}
+                </SimpleGrid>
             </Box>
 
-            <Box p={3} borderWidth="1px" borderRadius="md">
-                <FallbackStrategy
-                    value={data.fallback_strategy}
-                    onChange={(updated) =>
-                        onChange({
-                            fallback_strategy: updated,
-                        })
-                    }
-                />
+            {/* ======================================================
+                SECTION: Weather Data Fallback Strategy
+            ====================================================== */}
+            <Box
+                bg="bg.panel"
+                borderWidth="1px"
+                borderColor="border"
+                borderRadius="md"
+                p={4}
+                textAlign="left"
+            >
+                <Heading size="sm" mb={2} color="teal.600">
+                    Weather Data Fallback Strategy
+                </Heading>
+
+                <Text fontSize="sm" color="fg.muted" mb={6}>
+                    Define how the system should behave if weather data is
+                    missing or outdated.
+                </Text>
+
+                <Stack spacing={4}>
+                    {[
+                        {
+                            key: "on_fresh_weather_data_unavailable",
+                            label: "Fresh weather data unavailable",
+                            description: "The system cannot fetch up-to-date weather data, but cached data is still valid.",
+                            items: fullFallbackItems,
+                        },
+                        {
+                            key: "on_expired_weather_data",
+                            label: "Expired weather data",
+                            description: "The system cannot fetch up-to-date weather data, and cached data is outdated, but still available.",
+                            items: fullFallbackItems,
+                        },
+                        {
+                            key: "on_missing_weather_data",
+                            label: "Missing weather data",
+                            description: "The system has no weather data available at all.",
+                            items: limitedFallbackItems,
+                        },
+                    ].map(({ key, label, description, items }) => (
+                        <Box
+                            key={key}
+                            p={4}
+                            bg="bg.muted"
+                            borderRadius="md"
+                            borderWidth="1px"
+                            borderColor="border.subtle"
+                        >
+                            <Text
+                                fontSize="sm"
+                                fontWeight="medium"
+                                mb={2}
+                            >
+                                {label}
+                            </Text>
+                            <Text
+                                fontSize="xs"
+                                color="fg.muted"
+                                mb={4}
+                            >
+                                {description}
+                            </Text>
+
+                            <SegmentGroup.Root
+                                value={fallback_strategy[key]}
+                                onValueChange={(e) =>
+                                    updateFallback({
+                                        [key]: e.value,
+                                    })
+                                }
+                                colorPalette="teal"
+                                css={{
+                                    "--segment-indicator-bg": "colors.white",
+                                    "--segment-indicator-shadow": "shadows.md",
+                                }}
+                            >
+                                <SegmentGroup.Indicator />
+                                <For each={items.map((item) => item.value)}>
+                                    {(itemValue) => (
+                                        <SegmentGroup.Item key={itemValue} value={itemValue}>
+                                            <SegmentGroup.ItemText
+                                                _checked={{
+                                                    color: "colorPalette.fg",
+                                                    fontWeight: "medium",
+                                                }}
+                                            >
+                                                {items.find((item) => item.value === itemValue).label}
+                                            </SegmentGroup.ItemText>
+                                            <SegmentGroup.ItemHiddenInput />
+                                        </SegmentGroup.Item>
+                                    )}
+                                </For>
+                            </SegmentGroup.Root>
+                        </Box>
+                    ))}
+                </Stack>
             </Box>
         </Stack>
     )

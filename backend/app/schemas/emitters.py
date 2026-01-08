@@ -15,11 +15,11 @@ class EmitterType(str, Enum):
 
 class Emitter(BaseModel):
     type: EmitterType
-    flow_rate_lph: int
+    flow_rate_lph: float
     count: int
 
 class Plant(BaseModel):
-    id: int
+    id: str
     name: str
     emitters: list[Emitter]
 
