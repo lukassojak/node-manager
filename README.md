@@ -96,7 +96,7 @@ Instead, it acts as *a configuration compiler and planning tool   producing vali
 ### Backend
 - **FastAPI**
 - **SQLModel** (SQLAlchemy + Pydantic)
-- **SQLite** (MVP)
+- **SQLite**
 
 Design principles:
 - clean architecture
@@ -140,7 +140,7 @@ Focus:
 
 ---
 
-## Domain concepts (high level)
+## Domain concepts
 
 ### Node
 Represents a **physical irrigation controller**.
