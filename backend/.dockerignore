@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Local database files
+# *.sqlite3
+# *.db
+
+# Logs
+*.log
+logs/
+
+# Git files
+.git/
+.gitignore
+
+# Editor / OS files
+.vscode/
+.DS_Store
