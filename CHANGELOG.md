@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Backend dockerfile and .dockerignore for containerized deployment
+- Docker Compose setup
 
 ### Changed
 

@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: node-manager-backned
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite-data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./node_manager.db
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
