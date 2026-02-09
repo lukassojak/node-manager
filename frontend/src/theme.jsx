@@ -12,14 +12,5 @@ export const theme = createSystem(defaultConfig, {
                 },
             },
         },
-    },
-
-    // TOTO JE KLÍČOVÉ
-    preflight: {
-        scope: "html, body",
-        styles: {
-            bg: "background",
-            minHeight: "100%",
-        },
-    },
+    }
 })

@@ -12,34 +12,7 @@ import {
     Badge
 } from "@chakra-ui/react"
 import { fetchNodeById, deleteNode } from "../api/nodes.api"
-
-
-function CorrectionIndicator({ label, value }) {
-    return (
-        <Stack spacing={1} align="center">
-            <Text fontSize="xs" color="fg.subtle">
-                {label}
-            </Text>
-            <Box
-                w="60px"
-                h="6px"
-                bg="bg.subtle"
-                borderRadius="full"
-                position="relative"
-            >
-                <Box
-                    position="absolute"
-                    left="50%"
-                    transform={`translateX(${value * 30}px)`}
-                    w="6px"
-                    h="6px"
-                    bg="teal.500"
-                    borderRadius="full"
-                />
-            </Box>
-        </Stack>
-    )
-}
+import { LimitedCorrectionIndicator } from "../components/CorrectionIndicator"
 
 
 export default function NodeDetailPage() {
@@ -99,7 +72,7 @@ export default function NodeDetailPage() {
                         as={Link}
                         to="/"
                     >
-                        Back to Dashboard
+                        &larr; Back to Dashboard
                     </Button>
                 </HStack>
             </HStack>
@@ -304,15 +277,15 @@ export default function NodeDetailPage() {
                                 </Box>
                                 <Box w="120px">
                                     <Stack spacing={2} align="center">
-                                        <CorrectionIndicator
+                                        <LimitedCorrectionIndicator
                                             label="Solar"
                                             value={zone.local_correction_factors.solar}
                                         />
-                                        <CorrectionIndicator
+                                        <LimitedCorrectionIndicator
                                             label="Rain"
                                             value={zone.local_correction_factors.rain}
                                         />
-                                        <CorrectionIndicator
+                                        <LimitedCorrectionIndicator
                                             label="Temp"
                                             value={zone.local_correction_factors.temperature}
                                         />

@@ -4,41 +4,7 @@ import { SimpleGrid, DataList, Badge, HStack, Button, Stack, Box, Heading, Text 
 import { fetchZoneById, deleteZone } from '../api/nodes.api'
 
 import FrequencyTimeline from '../components/FrequencyTimeline'
-
-
-function CorrectionIndicator({ label, value }) {
-    return (
-        <Stack spacing={2} align="center">
-            <Text fontSize="xs" color="fg.subtle">
-                {label}
-            </Text>
-
-            <Box
-                w="72px"
-                h="6px"
-                bg="bg.subtle"
-                borderRadius="full"
-                position="relative"
-            >
-                <Box
-                    position="absolute"
-                    left="50%"
-                    transform={`translateX(${value * 30}px)`}
-                    w="6px"
-                    h="6px"
-                    bg="teal.500"
-                    borderRadius="full"
-                />
-            </Box>
-            <Stack>
-                {/* Display percentage with +/- sign */}
-                <Text fontSize="xs" color="fg.muted" fontWeight="semibold">
-                    {value > 0 ? `+${(value * 100).toFixed(0)}%` : `${(value * 100).toFixed(0)}%`}
-                </Text>
-            </Stack>
-        </Stack>
-    )
-}
+import { FullCorrectionIndicator } from '../components/CorrectionIndicator'
 
 
 function JsonBlock({ title, data }) {
@@ -89,6 +55,20 @@ export default function ZoneDetailPage() {
             {/* Page header */}
             <HStack justify="space-between" mb={6}>
                 <Stack spacing={2} align="flex-start">
+                    {/* Show breadcrumbs with node and zone */}
+                    <HStack spacing={2} align="center">
+                        <Link to={`/nodes/${nodeId}`}>
+                            <Text fontSize="xs" color="teal">
+                                Node #{nodeId}
+                            </Text>
+                        </Link>
+                        <Text fontSize="xs" color="teal">
+                            &rarr;
+                        </Text>
+                        <Text fontSize="xs" color="teal">
+                            Zone #{zone.id}
+                        </Text>
+                    </HStack>
                     <Heading size="lg" color="fg">
                         Zone #{zone.id}
                     </Heading>
@@ -114,7 +94,7 @@ export default function ZoneDetailPage() {
                         as={Link}
                         to={`/nodes/${nodeId}`}
                     >
-                        Back to Node Details
+                        &larr; Back to Node #{nodeId}
                     </Button>
                 </HStack>
             </HStack>
@@ -358,15 +338,15 @@ export default function ZoneDetailPage() {
                         <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
                             {/* Indicators */}
                             <HStack spacing={6}>
-                                <CorrectionIndicator
+                                <FullCorrectionIndicator
                                     label="Solar"
                                     value={zone.local_correction_factors.solar}
                                 />
-                                <CorrectionIndicator
+                                <FullCorrectionIndicator
                                     label="Rain"
                                     value={zone.local_correction_factors.rain}
                                 />
-                                <CorrectionIndicator
+                                <FullCorrectionIndicator
                                     label="Temperature"
                                     value={zone.local_correction_factors.temperature}
                                 />
@@ -569,10 +549,15 @@ export default function ZoneDetailPage() {
 
                 <Box
                     position="sticky"
-                    top="80px"              // pod page header
+                    top="80px"              // under page header
                     maxH="calc(100vh - 120px)"
                     overflowY="auto"
-                    pr={2}                  // prostor pro scrollbar
+                    pr={2}                  // scrollbar space
+                    bg="bg.panel"
+                    borderWidth="1px"
+                    borderColor="bg.panel"   // blend with background
+                    borderRadius="md"
+                    p={4}
                 >
                     <Stack spacing={4} gap={6}>
                         {/* Help boxes */}

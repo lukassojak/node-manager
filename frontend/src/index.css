@@ -1,0 +1,85 @@
+body::before {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    /* důležité – rezerva pro rotaci */
+    z-index: -1;
+
+    background: linear-gradient(120deg,
+            #f7f9fb 35%,
+            #fafefd 45%,
+            #f0fffc 50%,
+            /* change back to #f0fffc */
+            #f7f9fb 80%);
+    background-size: 200% 200%;
+
+    animation: bg-waves 24s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: background-position, filter, transform;
+    transform-origin: center;
+}
+
+@keyframes bg-waves {
+
+    /* levý horní – klid */
+    0% {
+        background-position: 100% 100%;
+        filter: blur(6px) saturate(95%);
+        transform: scale(1.02) rotate(0deg);
+    }
+
+    /* ponoření dolů – lehký náklon */
+    12% {
+        background-position: 70% 20%;
+        filter: blur(7px) saturate(97%);
+        transform: scale(1.03) rotate(-3deg);
+    }
+
+    /* návrat nahoru */
+    26% {
+        background-position: 90% 85%;
+        filter: blur(3px) saturate(102%);
+        transform: scale(1.01) rotate(-1deg);
+    }
+
+    /* horní střed – nejostřejší fáze */
+    38% {
+        background-position: 55% 95%;
+        filter: blur(2px) saturate(105%);
+        transform: scale(1) rotate(2deg);
+    }
+
+    /* hluboký levý dolní – „ponoření“ */
+    54% {
+        background-position: 95% 5%;
+        filter: blur(8px) saturate(96%);
+        transform: scale(1.035) rotate(4deg);
+    }
+
+    /* krátké nadechnutí */
+    62% {
+        background-position: 60% 70%;
+        filter: blur(3px) saturate(103%);
+        transform: scale(1.01) rotate(1deg);
+    }
+
+    /* zlom směru */
+    74% {
+        background-position: 35% 30%;
+        filter: blur(5px) saturate(100%);
+        transform: scale(1.02) rotate(-4deg);
+    }
+
+    /* návrat do horní dominance */
+    88% {
+        background-position: 80% 90%;
+        filter: blur(4px) saturate(98%);
+        transform: scale(1.015) rotate(-2deg);
+    }
+
+    /* uzavření cyklu */
+    100% {
+        background-position: 100% 100%;
+        filter: blur(6px) saturate(95%);
+        transform: scale(1.02) rotate(0deg);
+    }
+}

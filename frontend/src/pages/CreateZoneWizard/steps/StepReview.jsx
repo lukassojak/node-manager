@@ -13,32 +13,7 @@ import { useState } from "react"
 
 import FrequencyTimeline from "../../../components/FrequencyTimeline"
 
-function CorrectionIndicator({ label, value }) {
-    return (
-        <Stack spacing={1} align="center">
-            <Text fontSize="xs" color="fg.subtle">
-                {label}
-            </Text>
-            <Box
-                w="60px"
-                h="6px"
-                bg="bg.subtle"
-                borderRadius="full"
-                position="relative"
-            >
-                <Box
-                    position="absolute"
-                    left="50%"
-                    transform={`translateX(${value * 30}px)`}
-                    w="6px"
-                    h="6px"
-                    bg="teal.500"
-                    borderRadius="full"
-                />
-            </Box>
-        </Stack>
-    )
-}
+import { FullCorrectionIndicator } from "../../../components/CorrectionIndicator"
 
 export default function StepReview({ data }) {
     const [showRawData, setShowRawData] = useState(false)
@@ -205,15 +180,15 @@ export default function StepReview({ data }) {
                 </Heading>
 
                 <HStack spacing={6}>
-                    <CorrectionIndicator
+                    <FullCorrectionIndicator
                         label="Solar"
                         value={local_correction_factors.solar}
                     />
-                    <CorrectionIndicator
+                    <FullCorrectionIndicator
                         label="Rain"
                         value={local_correction_factors.rain}
                     />
-                    <CorrectionIndicator
+                    <FullCorrectionIndicator
                         label="Temp"
                         value={local_correction_factors.temperature}
                     />

@@ -470,7 +470,16 @@ export default function CreateNodePage() {
                     </HStack>
                 </Stack >
 
-                <Stack spacing={4} gap={6}>
+                <Stack
+                    spacing={4}
+                    gap={6}
+                    bg="bg.panel"
+                    borderWidth="1px"
+                    borderColor="bg.panel"
+                    borderRadius="md"
+                    p={4}
+                    h="fit-content"
+                >
                     {/* Help boxes */}
                     <Heading size="md" color="fg" textAlign="left">
                         Need Help?
@@ -521,22 +530,11 @@ export default function CreateNodePage() {
                     </Box>
 
                     {showAdvanced && (
-                        <Box bg="teal.700" p={4} borderRadius="md" textAlign="left">
-                            <Box
-                                px={2}
-                                py={1}
-                                borderRadius="sm"
-                                bg="teal.800"
-                                display="inline-block"
-                            >
-                                <Text fontSize="xs" color="whiteAlpha.800" fontWeight="semibold">
-                                    Advanced
-                                </Text>
-                            </Box>
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
+                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
+                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
                                 How to configure irrigation limits?
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.800">
+                            <Text fontSize="sm" color="fg.muted">
                                 Irrigation limits define <strong>safe boundaries for how much water can be applied</strong> during a single irrigation cycle.
 
                                 These limits act as a protection layer when weather-based calculations would otherwise produce extremely low or high irrigation volumes.
@@ -545,22 +543,11 @@ export default function CreateNodePage() {
                     )}
 
                     {showAdvanced && (
-                        <Box bg="teal.700" p={4} borderRadius="md" textAlign="left">
-                            <Box
-                                px={2}
-                                py={1}
-                                borderRadius="sm"
-                                bg="teal.800"
-                                display="inline-block"
-                            >
-                                <Text fontSize="xs" color="whiteAlpha.700" fontWeight="semibold">
-                                    Advanced
-                                </Text>
-                            </Box>
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
-                                Water Supply Max Flow
+                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
+                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
+                                What is Water Supply Max Flow?
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.800">
+                            <Text fontSize="sm" color="fg.muted">
                                 This setting represents a <strong>physical limitation of your water supply connection</strong>.
 
                                 When multiple zones are irrigated concurrently, the system ensures that the total water flow does not exceed this limit.
@@ -571,22 +558,11 @@ export default function CreateNodePage() {
                     )}
 
                     {showAdvanced && (
-                        <Box bg="teal.700" p={4} borderRadius="md" textAlign="left">
-                            <Box
-                                px={2}
-                                py={1}
-                                borderRadius="sm"
-                                bg="teal.800"
-                                display="inline-block"
-                            >
-                                <Text fontSize="xs" color="whiteAlpha.700" fontWeight="semibold">
-                                    Advanced
-                                </Text>
-                            </Box>
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
+                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
+                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
                                 What are weather cache settings?
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.800">
+                            <Text fontSize="sm" color="fg.muted">
                                 These settings control how often new weather data is fetched and how long it is considered valid.
                                 Longer cache durations improve system stability, while shorter intervals provide more up-to-date adjustments.
                             </Text>
@@ -594,22 +570,11 @@ export default function CreateNodePage() {
                     )}
 
                     {showAdvanced && (
-                        <Box bg="teal.700" p={4} borderRadius="md" textAlign="left">
-                            <Box
-                                px={2}
-                                py={1}
-                                borderRadius="sm"
-                                bg="teal.800"
-                                display="inline-block"
-                            >
-                                <Text fontSize="xs" color="whiteAlpha.700" fontWeight="semibold">
-                                    Advanced
-                                </Text>
-                            </Box>
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="whiteAlpha.900">
-                                Flow Control in Batch Strategy
+                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
+                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
+                                Flow control in batch strategy
                             </Heading>
-                            <Text fontSize="sm" color="whiteAlpha.800">
+                            <Text fontSize="sm" color="fg.muted">
                                 Enabling flow control <strong>helps manage water pressure when irrigating multiple zones concurrently</strong>.
                                 It dynamically adjusts valve openings to ensure the total flow remains within safe limits.
                             </Text>

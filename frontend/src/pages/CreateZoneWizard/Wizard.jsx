@@ -369,7 +369,15 @@ export default function Wizard() {
                 </Stack>
 
                 {/* Sidebar */}
-                <Stack spacing={4}>
+                <Stack
+                    spacing={4}
+                    bg="bg.panel"
+                    borderWidth="1px"
+                    borderColor="bg.panel"
+                    borderRadius="md"
+                    p={4}
+                    h="fit-content"
+                >
                     <Heading size="md" textAlign="left">
                         Need Help?
                     </Heading>

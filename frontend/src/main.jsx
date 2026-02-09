@@ -6,13 +6,12 @@ import { Box } from '@chakra-ui/react'
 import { theme } from "./theme"
 import router from './router.jsx'
 import './index.css'
-import App from './App.jsx'
 
-
+// Set background to dark mode by default
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ChakraProvider value={theme}>
-      <Box bg="bg.subtle" minH="100vh">
+      <Box minH="100vh">
         <RouterProvider router={router} />
       </Box>
     </ChakraProvider>
