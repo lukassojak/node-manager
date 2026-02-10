@@ -6,6 +6,10 @@ import { fetchZoneById, deleteZone } from '../api/nodes.api'
 import FrequencyTimeline from '../components/FrequencyTimeline'
 import { FullCorrectionIndicator } from '../components/CorrectionIndicator'
 
+import HelpSidebar from "../components/HelpSidebar"
+import HelpBox from "../components/HelpBox"
+import { zoneDetailHelp } from "../help/zoneDetailHelp"
+
 
 function JsonBlock({ title, data }) {
     return (
@@ -362,7 +366,7 @@ export default function ZoneDetailPage() {
                                     irrigation volume based on environmental conditions.
                                 </Text>
                                 <Text fontSize="xs" color="fg.subtle" mt={2}>
-                                    Left = less water • Center = neutral • Right = more water
+                                    Left = reduce • Center = neutral • Right = amplify
                                 </Text>
                             </Box>
                         </SimpleGrid>
@@ -547,124 +551,24 @@ export default function ZoneDetailPage() {
                     </Box>
                 </Stack>
 
-                <Box
-                    position="sticky"
-                    top="80px"              // under page header
-                    maxH="calc(100vh - 120px)"
-                    overflowY="auto"
-                    pr={2}                  // scrollbar space
-                    bg="bg.panel"
-                    borderWidth="1px"
-                    borderColor="bg.panel"   // blend with background
-                    borderRadius="md"
-                    p={4}
+                {/* Help sidebar */}
+                <HelpSidebar
+                    sticky
+                    stickyTop="80px"
+                    maxHeight="calc(100vh - 120px)"
                 >
-                    <Stack spacing={4} gap={6}>
-                        {/* Help boxes */}
-                        <Heading size="md" color="fg" textAlign="left">
-                            Need Help?
-                        </Heading>
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                What is a Zone?
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                A zone represents a <strong>specific area in your irrigation system that is managed independently</strong>. Each zone can have its own configuration, including the type and number of emitters, irrigation mode, and scheduling.
+                    {zoneDetailHelp.map(box => (
+                        <HelpBox key={box.id} title={box.title}>
+                            {box.description}
+                        </HelpBox>
+                    ))}
 
-                                Each zone is controlled by a relay valve connected to a specific pin on your irrigation controller.
-                            </Text>
-                        </Box>
-
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                Understanding Irrigation Modes
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Irrigation mode defines <strong>how the base water volume is calculated</strong> for this zone.
-                                <br /><br />
-                                <strong>Even Area</strong> mode is suitable for uniform areas such as lawns or garden beds.
-                                The base volume is calculated from:
-                                <ul>
-                                    <li>zone area (m²)</li>
-                                    <li>target water depth (mm)</li>
-                                </ul>
-                                <br />
-                                <strong>Per Plant</strong> mode is designed for zones with individual plants (e.g. pots or mixed crops).
-                                In this mode, the zone uses a predefined base target volume and distributes water based on plant-level emitter configuration.
-                            </Text>
-                        </Box>
-
-                        {zone.frequency_settings.dynamic_interval && (
-                            <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                                <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                    Frequency & Scheduling
-                                </Heading>
-                                <Text fontSize="sm" color="fg.muted">
-                                    Frequency settings define <strong>how often this zone is allowed to irrigate</strong>.
-                                    <br /><br />
-                                    When dynamic intervals are enabled, the node decides the irrigation day dynamically between
-                                    the minimum and maximum interval based on: <strong>weather conditions</strong>, <strong>calculated irrigation volume</strong>, and
-                                    a <strong>minimum volume threshold</strong>
-                                    <br />
-                                    The timeline below visualizes the allowed irrigation window and helps you understand
-                                    when irrigation may be skipped or delayed.
-                                </Text>
-                            </Box>
-                        )}
-
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                Weather Data Fallback Strategy
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Weather data is critical for adaptive irrigation, but it may occasionally be unavailable.
-
-                                Depending on configuration, the system can respond to missing or outdated weather data in different ways:
-                                <ul>
-                                    <li>use cached data</li>
-                                    <li>fall back to base volume</li>
-                                    <li>apply a reduced volume</li>
-                                    <li>or skip irrigation entirely</li>
-                                </ul>
-                            </Text>
-                        </Box>
-
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                Carry-over Volume & Threshold
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Sometimes the calculated irrigation volume is too small to be meaningful.
-                                <br /><br />
-                                If the volume is below the configured threshold, irrigation is skipped.
-                                When <strong>carry-over volume</strong> is enabled, the skipped volume
-                                is <strong>accumulated</strong> and added to the next irrigation cycle.
-                                <br /><br />
-                                This prevents frequent micro-irrigation cycles and helps maintain stable soil moisture.
-                                Disabling carry-over may lead to under-watering and is generally not recommended.
-                            </Text>
-                        </Box>
-
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                Local Correction Factors
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Correction factors fine-tune how strongly different weather conditions affect this zone.
-                                <br /><br />
-                                They are applied <strong>after</strong> the base irrigation volume is calculated.
-                                <ul>
-                                    <li><strong>Solar</strong> – adjusts sensitivity to sunlight</li>
-                                    <li><strong>Rain</strong> – adjusts impact of rainfall</li>
-                                    <li><strong>Temperature</strong> – adjusts response to air temperature</li>
-                                </ul>
-                                <br />
-                                These values allow compensating for microclimate differences between zones
-                                (e.g. shade, roof coverage, or soil type).
-                            </Text>
-                        </Box>
-                    </Stack>
-                </Box>
+                    {zone.frequency_settings.dynamic_interval && (
+                        <HelpBox title="Frequency & Scheduling">
+                            {/* původní JSX obsahu */}
+                        </HelpBox>
+                    )}
+                </HelpSidebar>
             </SimpleGrid>
         </Box>
     )

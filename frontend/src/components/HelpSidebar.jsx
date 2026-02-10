@@ -3,12 +3,15 @@ import { Stack, Box, Heading } from "@chakra-ui/react"
 export default function HelpSidebar({
     title = "Need Help?",
     sticky = false,
+    stickyTop = "24px",
+    maxHeight,
     scrollRef,
     children,
 }) {
     return (
         <Stack
             spacing={4}
+            gap={6}
             bg="bg.panel"
             borderWidth="1px"
             borderColor="bg.panel"
@@ -16,22 +19,20 @@ export default function HelpSidebar({
             p={4}
             h="fit-content"
             position={sticky ? "sticky" : "static"}
-            top={sticky ? "24px" : undefined}
+            top={sticky ? stickyTop : undefined}
+            maxH={maxHeight}
+            overflowY={maxHeight ? "auto" : undefined}
+            pr={maxHeight ? 2 : undefined}
         >
             <Heading size="md" textAlign="left">
                 {title}
             </Heading>
 
-            <Box
-                ref={scrollRef}
-                maxH="calc(100vh - 160px)"
-                overflowY="auto"
-                pr={2}
-            >
-                <Stack spacing={6}>
-                    {children}
-                </Stack>
-            </Box>
+            <Stack spacing={6}>
+                {children}
+            </Stack>
         </Stack>
     )
 }
+
+

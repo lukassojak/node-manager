@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom"
 import { For, SegmentGroup, Switch, Field, Text, Box, Heading, Input, Button, Stack, SimpleGrid, HStack } from "@chakra-ui/react"
 import { createNode } from "../api/nodes.api"
 
+import HelpSidebar from "../components/HelpSidebar"
+import HelpBox from "../components/HelpBox"
+import { createNodeHelp, createNodeAdvancedHelp } from "../help/createNodeHelp"
+
 
 export default function CreateNodePage() {
     const navigate = useNavigate()
@@ -470,117 +474,21 @@ export default function CreateNodePage() {
                     </HStack>
                 </Stack >
 
-                <Stack
-                    spacing={4}
-                    gap={6}
-                    bg="bg.panel"
-                    borderWidth="1px"
-                    borderColor="bg.panel"
-                    borderRadius="md"
-                    p={4}
-                    h="fit-content"
-                >
-                    {/* Help boxes */}
-                    <Heading size="md" color="fg" textAlign="left">
-                        Need Help?
-                    </Heading>
-                    <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                        <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                            What is a Node?
-                        </Heading>
-                        <Text fontSize="sm" color="fg.muted">
-                            A node represents a <strong>physical irrigation controller</strong> responsible for managing one or more irrigation zones.
+                <HelpSidebar fullHeight>
+                    {createNodeHelp.map(box => (
+                        <HelpBox key={box.id} title={box.title}>
+                            {box.description}
+                        </HelpBox>
+                    ))}
 
-                            Each node defines global behavior such as automation schedule, safety irrigation limits, and batching strategy.
-                            Zones created under a node inherit these settings and apply them during irrigation cycles.
-                        </Text>
-                    </Box>
+                    {showAdvanced &&
+                        createNodeAdvancedHelp.map(box => (
+                            <HelpBox key={box.id} title={box.title}>
+                                {box.description}
+                            </HelpBox>
+                        ))}
+                </HelpSidebar>
 
-                    <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                        <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                            How does automation & scheduling work?
-                        </Heading>
-                        <Text fontSize="sm" color="fg.muted">
-                            When automation is enabled, the node evaluates irrigation needs <strong>once per day at the scheduled time</strong>.
-
-                            Based on weather data, zone configuration, and system limits, the node decides which zones should be irrigated and how much water should be applied.
-                        </Text>
-                    </Box>
-
-                    <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                        <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                            What is Batch Strategy?
-                        </Heading>
-                        <Text fontSize="sm" color="fg.muted">
-                            The batch strategy defines <strong>how multiple irrigation zones are executed</strong> within one irrigation cycle.
-
-                            Sequential mode irrigates zones one after another, while concurrent mode allows multiple zones to run at the same time, depending on system limits and water flow capacity.
-                        </Text>
-                    </Box>
-
-                    <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                        <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                            Do I need to configure advanced settings?
-                        </Heading>
-                        <Text fontSize="sm" color="fg.muted">
-                            <strong>Advanced settings are optional</strong> and provide finer control over irrigation behavior.
-
-                            Safe default values are applied upon node creation and can be modified later as needed.
-                        </Text>
-                    </Box>
-
-                    {showAdvanced && (
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                How to configure irrigation limits?
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Irrigation limits define <strong>safe boundaries for how much water can be applied</strong> during a single irrigation cycle.
-
-                                These limits act as a protection layer when weather-based calculations would otherwise produce extremely low or high irrigation volumes.
-                            </Text>
-                        </Box>
-                    )}
-
-                    {showAdvanced && (
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                What is Water Supply Max Flow?
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                This setting represents a <strong>physical limitation of your water supply connection</strong>.
-
-                                When multiple zones are irrigated concurrently, the system ensures that the total water flow does not exceed this limit.
-
-                                Leave this unset if your installation does not require flow-based restrictions.
-                            </Text>
-                        </Box>
-                    )}
-
-                    {showAdvanced && (
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                What are weather cache settings?
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                These settings control how often new weather data is fetched and how long it is considered valid.
-                                Longer cache durations improve system stability, while shorter intervals provide more up-to-date adjustments.
-                            </Text>
-                        </Box>
-                    )}
-
-                    {showAdvanced && (
-                        <Box bg="teal.50" p={4} borderRadius="md" textAlign="left">
-                            <Heading fontSize="sm" fontWeight="bold" mb={2} color="teal.700">
-                                Flow control in batch strategy
-                            </Heading>
-                            <Text fontSize="sm" color="fg.muted">
-                                Enabling flow control <strong>helps manage water pressure when irrigating multiple zones concurrently</strong>.
-                                It dynamically adjusts valve openings to ensure the total flow remains within safe limits.
-                            </Text>
-                        </Box>
-                    )}
-                </Stack>
             </SimpleGrid >
 
         </Box >
