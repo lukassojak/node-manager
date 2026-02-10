@@ -5,6 +5,8 @@ import { createNode } from "../api/nodes.api"
 
 import HelpSidebar from "../components/HelpSidebar"
 import HelpBox from "../components/HelpBox"
+import PanelSection from '../components/layout/PanelSection'
+
 import { createNodeHelp, createNodeAdvancedHelp } from "../help/createNodeHelp"
 
 
@@ -98,25 +100,15 @@ export default function CreateNodePage() {
             </HStack>
 
             <SimpleGrid columns={{ base: 1, lg: 3 }} gap={6}>
-                <Stack spacing={6} gap={10} gridColumn="span 2">
+                <Stack gap={10} gridColumn="span 2">
                     {/* Basic settings */}
-                    <Stack spacing={6} gap={6}>
+                    <Stack gap={6}>
                         <Heading size="md" color="fg" textAlign="left">
                             Primary Settings
                         </Heading>
 
-                        <Box
-                            bg="bg.panel"
-                            borderWidth="1px"
-                            borderColor="border"
-                            borderRadius="md"
-                            textAlign="left"
-                            p={4}
-                        >
-                            <Heading size="sm" mb={4} color="teal.600">
-                                Basic Information
-                            </Heading>
-                            <Stack spacing={4} gap={6}>
+                        <PanelSection title="Basic Information">
+                            <Stack gap={6}>
                                 {/* Name input */}
                                 <Field.Root required>
                                     <Field.Label>Node Name <Field.RequiredIndicator /></Field.Label>
@@ -147,19 +139,9 @@ export default function CreateNodePage() {
                                 </Field.Root>
 
                             </Stack>
-                        </Box>
+                        </PanelSection>
 
-                        <Box
-                            bg="bg.panel"
-                            borderWidth="1px"
-                            borderColor="border"
-                            borderRadius="md"
-                            textAlign="left"
-                            p={4}
-                        >
-                            <Heading size="sm" mb={4} color="teal.600">
-                                Automation Settings
-                            </Heading>
+                        <PanelSection title="Automation Settings">
                             <Stack spacing={4} gap={6}>
                                 {/* Scheduled time input */}
                                 <Field.Root>
@@ -199,19 +181,9 @@ export default function CreateNodePage() {
                                     </Field.Root>
                                 </HStack>
                             </Stack>
-                        </Box>
+                        </PanelSection>
 
-                        <Box
-                            bg="bg.panel"
-                            borderWidth="1px"
-                            borderColor="border"
-                            borderRadius="md"
-                            textAlign="left"
-                            p={4}
-                        >
-                            <Heading size="sm" mb={4} color="teal.600">
-                                Batch Strategy
-                            </Heading>
+                        <PanelSection title="Batch Strategy">
                             <Stack spacing={4} gap={6}>
                                 <Field.Root>
                                     <Field.Label>Irrigation mode</Field.Label>
@@ -248,10 +220,8 @@ export default function CreateNodePage() {
                                         Invalid selection.
                                     </Field.ErrorText>
                                 </Field.Root>
-
                             </Stack>
-
-                        </Box>
+                        </PanelSection>
                     </Stack>
 
                     {/* Advanced settings, collapsible */}
@@ -260,18 +230,7 @@ export default function CreateNodePage() {
                             <Heading size="md" color="fg" textAlign="left">
                                 Advanced Settings
                             </Heading>
-                            <Box
-                                bg="bg.panel"
-                                borderWidth="1px"
-                                borderColor="border"
-                                borderRadius="md"
-                                textAlign="left"
-                                p={4}
-                            >
-                                <Heading size="sm" mb={4} color="teal.600">
-                                    Irrigation Limits
-                                </Heading>
-
+                            <PanelSection title="Irrigation Limits">
                                 <Stack spacing={4} gap={6}>
                                     <HStack justify="space-between" align="flex-start">
                                         <Field.Root>
@@ -324,19 +283,9 @@ export default function CreateNodePage() {
                                         </Field.ErrorText>
                                     </Field.Root>
                                 </Stack>
-                            </Box>
+                            </PanelSection>
 
-                            <Box
-                                bg="bg.panel"
-                                borderWidth="1px"
-                                borderColor="border"
-                                borderRadius="md"
-                                textAlign="left"
-                                p={4}
-                            >
-                                <Heading size="sm" mb={4} color="teal.600">
-                                    Weather Fetching Settings
-                                </Heading>
+                            <PanelSection title="Weather Fetching">
                                 <Text fontSize="sm" color="fg.muted" mb={6}>
                                     These settings control how often weather data is fetched and how long it is cached.
                                     Default values are applied upon node creation and can be modified later.
@@ -375,19 +324,9 @@ export default function CreateNodePage() {
                                         </Field.Root>
                                     </HStack>
                                 </Stack>
-                            </Box>
+                            </PanelSection>
 
-                            <Box
-                                bg="bg.panel"
-                                borderWidth="1px"
-                                borderColor="border"
-                                borderRadius="md"
-                                textAlign="left"
-                                p={4}
-                            >
-                                <Heading size="sm" mb={4} color="teal.600">
-                                    Batch Strategy - Advanced
-                                </Heading>
+                            <PanelSection title="Flow Control & Batch Strategy">
                                 <Stack spacing={4} gap={6}>
                                     <Field.Root colorPalette="teal">
                                         <Field.Label>Flow Control</Field.Label>
@@ -449,7 +388,7 @@ export default function CreateNodePage() {
                                         </Field.Root>
                                     </HStack>
                                 </Stack>
-                            </Box>
+                            </PanelSection>
                         </Stack>
                     )}
 

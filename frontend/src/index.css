@@ -35,51 +35,57 @@ body::before {
     }
 
     /* návrat nahoru */
-    26% {
+    22% {
         background-position: 90% 85%;
-        filter: blur(3px) saturate(102%);
-        transform: scale(1.01) rotate(-1deg);
+        filter: blur(1px) saturate(170%);
+        transform: scale(1) rotate(-1deg);
     }
 
     /* horní střed – nejostřejší fáze */
-    38% {
+    28% {
         background-position: 55% 95%;
-        filter: blur(2px) saturate(105%);
+        filter: blur(4px) saturate(105%);
         transform: scale(1) rotate(2deg);
+    }
+
+    40% {
+        background-position: 80% 60%;
+        filter: blur(5px) saturate(90%);
+        transform: scale(1.02) rotate(6deg);
     }
 
     /* hluboký levý dolní – „ponoření“ */
     54% {
         background-position: 95% 5%;
-        filter: blur(8px) saturate(96%);
-        transform: scale(1.035) rotate(4deg);
+        filter: blur(8px) saturate(105%);
+        transform: scale(1.035) rotate(8deg);
     }
 
     /* krátké nadechnutí */
     62% {
         background-position: 60% 70%;
-        filter: blur(3px) saturate(103%);
-        transform: scale(1.01) rotate(1deg);
+        filter: blur(3px) saturate(95%);
+        transform: scale(1.02) rotate(1deg);
     }
 
     /* zlom směru */
     74% {
         background-position: 35% 30%;
-        filter: blur(5px) saturate(100%);
+        filter: blur(8px) saturate(70%);
         transform: scale(1.02) rotate(-4deg);
     }
 
     /* návrat do horní dominance */
-    88% {
+    80% {
         background-position: 80% 90%;
-        filter: blur(4px) saturate(98%);
+        filter: blur(4px) saturate(88%);
         transform: scale(1.015) rotate(-2deg);
     }
 
     /* uzavření cyklu */
     100% {
         background-position: 100% 100%;
-        filter: blur(6px) saturate(95%);
-        transform: scale(1.02) rotate(0deg);
+        filter: blur(10px) saturate(95%);
+        transform: scale(1.15) rotate(0deg);
     }
 }

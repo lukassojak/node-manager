@@ -11,8 +11,11 @@ import {
     DataList,
     Badge
 } from "@chakra-ui/react"
+
 import { fetchNodeById, deleteNode } from "../api/nodes.api"
+
 import { LimitedCorrectionIndicator } from "../components/CorrectionIndicator"
+import PanelSection from "../components/layout/PanelSection"
 
 
 export default function NodeDetailPage() {
@@ -38,7 +41,7 @@ export default function NodeDetailPage() {
         <Box p={6}>
             {/* Page header */}
             <HStack justify="space-between" mb={6}>
-                <Stack spacing={2} align="flex-start">
+                <Stack align="flex-start">
                     <Heading size="lg" color="fg">
                         Node #{node.id}
                     </Heading>
@@ -47,7 +50,7 @@ export default function NodeDetailPage() {
                     </Text>
                 </Stack>
 
-                <HStack spacing={2}>
+                <HStack>
                     <Button
                         as={Link}
                         to={`/nodes/${node.id}/zones/new`}
@@ -77,92 +80,72 @@ export default function NodeDetailPage() {
                 </HStack>
             </HStack>
 
-            {/* Node summary */}
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                mb={6}
-                textAlign="left"
-            >
-                <Stack spacing={2}>
-                    <HStack spacing={2}>
-                        <Text fontSize="sm" color="fg.muted">
-                            Node ID
-                        </Text>
-                        <Text fontSize="sm">{node.id}</Text>
-                    </HStack>
-                    <HStack spacing={2}>
-                        {node.location && (
-                            <>
-                                <Text fontSize="sm" color="fg.muted">
-                                    Location
-                                </Text>
-                                <Text fontSize="sm">{node.location}</Text>
-                            </>
-                        )}
-                    </HStack>
-                    <HStack spacing={2}>
-                        <Text fontSize="sm" color="fg.muted">
-                            Last updated
-                        </Text>
-                        <Text fontSize="sm">{new Date(node.last_updated).toLocaleString() || "N/A"}</Text>
-                    </HStack>
-                </Stack>
-            </Box>
+            <Stack gap={10} mb={6}>
+                {/* Node summary */}
+                <PanelSection title="Node Summary">
+                    <Stack>
+                        <HStack>
+                            <Text fontSize="sm" color="fg.muted">
+                                Node ID
+                            </Text>
+                            <Text fontSize="sm">{node.id}</Text>
+                        </HStack>
+                        <HStack>
+                            {node.location && (
+                                <>
+                                    <Text fontSize="sm" color="fg.muted">
+                                        Location
+                                    </Text>
+                                    <Text fontSize="sm">{node.location}</Text>
+                                </>
+                            )}
+                        </HStack>
+                        <HStack>
+                            <Text fontSize="sm" color="fg.muted">
+                                Last updated
+                            </Text>
+                            <Text fontSize="sm">{new Date(node.last_updated).toLocaleString() || "N/A"}</Text>
+                        </HStack>
+                    </Stack>
+                </PanelSection>
 
-
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                mb={6}
-                textAlign="left"
-            >
-                <Heading size="sm" mb={3}>
-                    Configuration Overview
-                </Heading>
-
-                <SimpleGrid columns={{ base: 1, md: 2 }} gap={3}>
-                    <DataList.Root orientation="horizontal" spacing={6}>
-                        <DataList.Item>
-                            <DataList.ItemLabel>Automation</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                                {/* Use badge colors for enabled/disabled */}
-                                {node.automation.enabled ? (
-                                    <Badge colorPalette="green">Enabled</Badge>
-                                ) : (
-                                    <Badge colorPalette="red">Disabled</Badge>
-                                )}
-                            </DataList.ItemValue>
-                        </DataList.Item>
-                        <DataList.Item>
-                            <DataList.ItemLabel>Scheduled Time</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                                {node.automation.enabled
-                                    ? `${String(node.automation.scheduled_hour).padStart(2, '0')}:${String(node.automation.scheduled_minute).padStart(2, '0')}`
-                                    : "N/A"}
-                            </DataList.ItemValue>
-                        </DataList.Item>
-                        <DataList.Item>
-                            <DataList.ItemLabel>Batch Strategy</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                                {node.batch_strategy.concurrent_irrigation
-                                    ? "Concurrent irrigation"
-                                    : "Sequential irrigation"}
-                            </DataList.ItemValue>
-                        </DataList.Item>
-                        <DataList.Item>
-                            <DataList.ItemLabel>Flow Control</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                                {node.batch_strategy.flow_control ? "Enabled" : "Disabled"}
-                            </DataList.ItemValue>
-                        </DataList.Item>
-                        {/*
+                <PanelSection title="Configuration Overview">
+                    <SimpleGrid columns={{ base: 1, md: 2 }} gap={3}>
+                        <DataList.Root orientation="horizontal">
+                            <DataList.Item>
+                                <DataList.ItemLabel>Automation</DataList.ItemLabel>
+                                <DataList.ItemValue>
+                                    {/* Use badge colors for enabled/disabled */}
+                                    {node.automation.enabled ? (
+                                        <Badge colorPalette="green">Enabled</Badge>
+                                    ) : (
+                                        <Badge colorPalette="red">Disabled</Badge>
+                                    )}
+                                </DataList.ItemValue>
+                            </DataList.Item>
+                            <DataList.Item>
+                                <DataList.ItemLabel>Scheduled Time</DataList.ItemLabel>
+                                <DataList.ItemValue>
+                                    {node.automation.enabled
+                                        ? `${String(node.automation.scheduled_hour).padStart(2, '0')}:${String(node.automation.scheduled_minute).padStart(2, '0')}`
+                                        : "N/A"}
+                                </DataList.ItemValue>
+                            </DataList.Item>
+                            <DataList.Item>
+                                <DataList.ItemLabel>Batch Strategy</DataList.ItemLabel>
+                                <DataList.ItemValue>
+                                    {node.batch_strategy.concurrent_irrigation
+                                        ? "Concurrent irrigation"
+                                        : "Sequential irrigation"}
+                                </DataList.ItemValue>
+                            </DataList.Item>
+                            <DataList.Item>
+                                <DataList.ItemLabel>Flow Control</DataList.ItemLabel>
+                                <DataList.ItemValue>
+                                    {node.batch_strategy.flow_control ? "Enabled" : "Disabled"}
+                                </DataList.ItemValue>
+                            </DataList.Item>
+                            {/*
                         <DataList.Item>
                             <DataList.ItemLabel>Input Pins</DataList.ItemLabel>
                             <DataList.ItemValue>{node.hardware.input_pins.length}</DataList.ItemValue>
@@ -172,9 +155,10 @@ export default function NodeDetailPage() {
                             <DataList.ItemValue>{node.hardware.output_pins.length}</DataList.ItemValue>
                         </DataList.Item>
                         */}
-                    </DataList.Root>
-                </SimpleGrid>
-            </Box>
+                        </DataList.Root>
+                    </SimpleGrid>
+                </PanelSection>
+            </Stack>
 
             {/* Zones */}
             <Box>
@@ -220,7 +204,7 @@ export default function NodeDetailPage() {
                             }}
                             textAlign="left"
                         >
-                            <HStack align="stretch" spacing={4}>
+                            <HStack align="stretch">
                                 <Box
                                     w="40px"
                                     display="flex"
@@ -241,7 +225,7 @@ export default function NodeDetailPage() {
                                     </Box>
                                 </Box>
                                 <Box flex="1">
-                                    <Stack spacing={2} textAlign="left">
+                                    <Stack textAlign="left">
                                         {/* Zone identity */}
                                         <Heading size="md" color="fg">
                                             Zone #{zone.id}
@@ -252,7 +236,7 @@ export default function NodeDetailPage() {
                                         </Text>
 
                                         {/* Status row */}
-                                        <HStack spacing={3} mt={2}>
+                                        <HStack mt={2}>
                                             <Badge
                                                 colorPalette={
                                                     zone.enabled ? "green" : "red"
@@ -276,7 +260,7 @@ export default function NodeDetailPage() {
                                     </Stack>
                                 </Box>
                                 <Box w="120px">
-                                    <Stack spacing={2} align="center">
+                                    <Stack align="center">
                                         <LimitedCorrectionIndicator
                                             label="Solar"
                                             value={zone.local_correction_factors.solar}
