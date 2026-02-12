@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Backend dockerfile and .dockerignore for containerized deployment
 - Docker Compose setup
+- `optimization.py` schema for computing optimal emitter configurations based on plant-level water needs
 
 ### Changed
 
