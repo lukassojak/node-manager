@@ -14,6 +14,8 @@ import {
     Separator,
 } from "@chakra-ui/react"
 
+import PanelSection from "../../../components/layout/PanelSection"
+
 const EMITTER_PRESETS = [
     { type: "dripper", label: "Dripper", icon: "💧", defaultFlow: 2 },
     { type: "soaker_hose", label: "Soaker hose", icon: "〰️", defaultFlow: 10 },
@@ -116,25 +118,11 @@ export default function StepEmittersPerPlant({
     ----------------------------- */
 
     return (
-        <Stack spacing={6} gap={10}>
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                textAlign="left"
+        <Stack gap={10}>
+            <PanelSection
+                title="Configure plants and emitters"
+                description="Define individual plants within this zone and assign emitters to each plant. The system will later distribute the zone water budget across these plants."
             >
-                <Heading size="sm" mb={2} color="teal.600">
-                    Configure plants and emitters
-                </Heading>
-
-                <Text fontSize="sm" color="fg.muted" mb={6}>
-                    Define individual plants within this zone and assign emitters to
-                    each plant. The system will later distribute the zone water
-                    budget across these plants.
-                </Text>
-
                 {/* -----------------------------
                         Inactive plant editor
                         ----------------------------- */}
@@ -151,18 +139,7 @@ export default function StepEmittersPerPlant({
                 ----------------------------- */}
 
                 {activePlant && (
-                    <Box
-                        mb={8}
-                        p={4}
-                        bg="bg.panel"
-                        borderWidth="1px"
-                        borderColor="border"
-                        borderRadius="md"
-                    >
-                        <Heading size="sm" mb={4} color="teal.600">
-                            🌱 Plant configuration
-                        </Heading>
-
+                    <PanelSection title="🌱 Plant configuration">
                         <Field.Root required mb={4}>
                             <Field.Label>Plant name</Field.Label>
                             <Input
@@ -178,7 +155,7 @@ export default function StepEmittersPerPlant({
                         </Field.Root>
 
                         {/* Add emitter buttons */}
-                        <HStack spacing={3} mb={4}>
+                        <HStack mb={4}>
                             {EMITTER_PRESETS.map((preset) => (
                                 <Button
                                     key={preset.type}
@@ -204,18 +181,10 @@ export default function StepEmittersPerPlant({
                                         : 0
 
                                 return (
-                                    <Box
-                                        key={index}
-                                        p={4}
-                                        borderRadius="lg"
-                                        bg="bg.panel"
-                                        boxShadow="sm"
-                                        borderWidth="1px"
-                                        borderColor="border.subtle"
-                                    >
+                                    <PanelSection key={index}>
                                         {/* Header */}
                                         <HStack justify="space-between" mb={3}>
-                                            <HStack spacing={3}>
+                                            <HStack>
                                                 <Box fontSize="xl">
                                                     {emitter.type === "dripper" && "💧"}
                                                     {emitter.type === "soaker_hose" && "〰️"}
@@ -236,8 +205,8 @@ export default function StepEmittersPerPlant({
                                             </Button>
                                         </HStack>
 
-                                        <Stack spacing={3}>
-                                            <HStack spacing={3}>
+                                        <Stack>
+                                            <HStack>
                                                 <Field.Root>
                                                     <Field.Label>Flow rate (l/h)</Field.Label>
                                                     <Input
@@ -301,7 +270,7 @@ export default function StepEmittersPerPlant({
                                                 </Text>
                                             </Box>
                                         </Stack>
-                                    </Box>
+                                    </PanelSection>
                                 )
                             })}
                         </SimpleGrid>
@@ -320,25 +289,16 @@ export default function StepEmittersPerPlant({
                                 Cancel
                             </Button>
                         </HStack>
-                    </Box>
+                    </PanelSection>
                 )}
-            </Box>
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                textAlign="left"
+            </PanelSection>
+            <PanelSection
+                title="Configured plants overview"
+                description="A summary of all plants you've configured in this zone, along with their assigned emitters and flow rates."
             >
                 {/* -----------------------------
                     Configured plants overview
                     ----------------------------- */}
-
-                <Heading size="sm" mb={4} color="teal.600">
-                    Configured plants
-                </Heading>
-
                 <SimpleGrid columns={{ base: 1, md: 3 }} gap={3}>
                     {plants.map((plant, index) => {
                         const totalFlow = plant.emitters.reduce(
@@ -415,7 +375,7 @@ export default function StepEmittersPerPlant({
 
                 <Separator my={6} />
 
-                <Stack spacing={1}>
+                <Stack>
                     <Text fontSize="sm" color="fg.muted">
                         Total zone flow
                     </Text>
@@ -440,7 +400,7 @@ export default function StepEmittersPerPlant({
                     </Text>
                 </Stack>
 
-            </Box>
+            </PanelSection>
         </Stack>
     )
 }

@@ -9,25 +9,16 @@ import {
     Text,
 } from "@chakra-ui/react"
 
+import PanelSection from "../../../components/layout/PanelSection"
+
 export default function StepBasicInfo({ data, onChange }) {
     const update = (patch) => {
         onChange({ ...data, ...patch })
     }
 
     return (
-        <Box
-            bg="bg.panel"
-            borderWidth="1px"
-            borderColor="border"
-            borderRadius="md"
-            p={4}
-            textAlign="left"
-        >
-            <Heading size="sm" mb={4} color="teal.600">
-                Basic Zone Information
-            </Heading>
-
-            <Stack spacing={6}>
+        <PanelSection title="Basic Zone Information">
+            <Stack gap={6}>
                 {/* Zone name */}
                 <Field.Root required>
                     <Field.Label>
@@ -99,6 +90,6 @@ export default function StepBasicInfo({ data, onChange }) {
                     </Field.Root>
                 </HStack>
             </Stack>
-        </Box>
+        </PanelSection>
     )
 }

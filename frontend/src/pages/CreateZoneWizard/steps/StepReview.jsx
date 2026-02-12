@@ -12,6 +12,7 @@ import {
 import { useState } from "react"
 
 import FrequencyTimeline from "../../../components/FrequencyTimeline"
+import PanelSection from "../../../components/layout/PanelSection"
 
 import { FullCorrectionIndicator } from "../../../components/CorrectionIndicator"
 
@@ -50,17 +51,13 @@ export default function StepReview({ data }) {
             )
 
     return (
-        <Stack spacing={8}>
+        <Stack>
 
             {/* -------------------------
             Zone summary
         ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
-                <Heading size="sm" mb={4} color="teal.600">
-                    Zone summary
-                </Heading>
-
-                <DataList.Root orientation="horizontal" spacing={6}>
+            <PanelSection title="Zone summary">
+                <DataList.Root orientation="horizontal">
                     <DataList.Item>
                         <DataList.ItemLabel>Name</DataList.ItemLabel>
                         <DataList.ItemValue>
@@ -92,16 +89,12 @@ export default function StepReview({ data }) {
                         </DataList.ItemValue>
                     </DataList.Item>
                 </DataList.Root>
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Irrigation strategy
         ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
-                <Heading size="sm" mb={4} color="teal.600">
-                    Irrigation strategy
-                </Heading>
-
+            <PanelSection title="Irrigation strategy">
                 <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
                     <Box>
                         <Text fontSize="xs" color="fg.muted">Mode</Text>
@@ -141,15 +134,12 @@ export default function StepReview({ data }) {
                         </Box>
                     )}
                 </SimpleGrid>
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Emitters overview
         ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
-                <Heading size="sm" mb={4} color="teal.600">
-                    Emitters overview
-                </Heading>
+            <PanelSection title="Emitters overview">
 
                 <Text fontSize="sm" color="fg.muted" mb={3}>
                     Total zone flow
@@ -158,28 +148,21 @@ export default function StepReview({ data }) {
                 <Text fontSize="lg" fontWeight="semibold">
                     {totalZoneFlow?.toFixed(1)} l/h
                 </Text>
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Behavior & scheduling
         ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
-                <Heading size="sm" mb={4} color="teal.600">
-                    Behavior & scheduling
-                </Heading>
+            <PanelSection title="Behavior & scheduling">
 
                 <FrequencyTimeline settings={frequency_settings} />
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Corrections
         ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
-                <Heading size="sm" mb={4} color="teal.600">
-                    Local corrections
-                </Heading>
-
-                <HStack spacing={6}>
+            <PanelSection title="Corrections overview">
+                <HStack>
                     <FullCorrectionIndicator
                         label="Solar"
                         value={local_correction_factors.solar}
@@ -193,12 +176,12 @@ export default function StepReview({ data }) {
                         value={local_correction_factors.temperature}
                     />
                 </HStack>
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Option to show raw data
             ------------------------- */}
-            <Box bg="bg.panel" p={4} borderRadius="md" borderWidth="1px">
+            <PanelSection title="Raw configuration data">
                 <Text
                     fontSize="sm"
                     color="teal.600"
@@ -222,7 +205,7 @@ export default function StepReview({ data }) {
                         {JSON.stringify(data, null, 2)}
                     </Box>
                 )}
-            </Box>
+            </PanelSection>
 
             {/* -------------------------
             Final hint

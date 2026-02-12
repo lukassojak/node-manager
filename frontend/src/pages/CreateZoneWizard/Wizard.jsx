@@ -65,6 +65,12 @@ export default function Wizard() {
     })
 
     /* --------------------------------------------
+         AutoOptimize state for per-plant emitter configuration
+    -------------------------------------------- */
+
+    const [autoOptimize, setAutoOptimize] = useState(true)
+
+    /* --------------------------------------------
        Steps (DATA-DRIVEN)
     -------------------------------------------- */
 
@@ -109,12 +115,22 @@ export default function Wizard() {
                 key: "irrigation",
                 title: "Irrigation",
                 description: "Water targets",
-                isValid: () =>
-                    zoneDraft.irrigation_mode === "even_area"
-                        ? zoneDraft.irrigation_configuration?.zone_area_m2 &&
-                        zoneDraft.irrigation_configuration?.target_mm
-                        : zoneDraft.irrigation_configuration
-                            ?.base_target_volume_liters,
+                isValid: () => {
+                    if (zoneDraft.irrigation_mode === "even_area") {
+                        return (
+                            zoneDraft.irrigation_configuration?.zone_area_m2 &&
+                            zoneDraft.irrigation_configuration?.target_mm
+                        )
+                    }
+
+                    if (zoneDraft.irrigation_mode === "per_plant") {
+                        if (autoOptimize) return true
+
+                        return !!zoneDraft.irrigation_configuration?.base_target_volume_liters
+                    }
+
+                    return false
+                },
                 render: () =>
                     zoneDraft.irrigation_mode === "even_area" ? (
                         <StepIrrigationEvenArea
@@ -129,12 +145,14 @@ export default function Wizard() {
                     ) : (
                         <StepIrrigationPerPlant
                             data={zoneDraft.irrigation_configuration || {}}
+                            autoOptimize={autoOptimize} // Pass the autoOptimize state
                             onChange={(config) =>
                                 setZoneDraft({
                                     ...zoneDraft,
                                     irrigation_configuration: config,
                                 })
                             }
+                            onAutoOptimizeChange={setAutoOptimize} // Pass the state updater
                         />
                     ),
             },
@@ -204,7 +222,7 @@ export default function Wizard() {
                 render: () => <StepReview data={zoneDraft} />,
             },
         ],
-        [zoneDraft]
+        [zoneDraft, autoOptimize]
     )
 
     const activeStep = steps[currentStep]

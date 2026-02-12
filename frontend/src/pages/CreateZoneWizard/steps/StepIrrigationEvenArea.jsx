@@ -9,6 +9,8 @@ import {
     Separator,
 } from "@chakra-ui/react"
 
+import PanelSection from "../../../components/layout/PanelSection"
+
 export default function StepIrrigationEvenArea({ data, onChange }) {
     const zoneArea = data.zone_area_m2 || ""
     const targetMm = data.target_mm || ""
@@ -19,23 +21,12 @@ export default function StepIrrigationEvenArea({ data, onChange }) {
             : null
 
     return (
-        <Box
-            bg="bg.panel"
-            borderWidth="1px"
-            borderColor="border"
-            borderRadius="md"
-            p={4}
-            textAlign="left"
-        >
-            <Heading size="sm" mb={4} color="teal.600">
-                Even Area Irrigation
-            </Heading>
-
-            <Text fontSize="sm" color="fg.muted" mb={6}>
-                In this mode, the entire zone is irrigated evenly.
+        <PanelSection
+            title="Even Area Irrigation"
+            description="In this mode, the entire zone is irrigated evenly.
                 The system calculates the required water volume from the
-                zone area and the target water depth.
-            </Text>
+                zone area and the target water depth."
+        >
 
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
                 {/* Zone area */}
@@ -88,7 +79,7 @@ export default function StepIrrigationEvenArea({ data, onChange }) {
             <Separator my={6} />
 
             {/* Calculated result */}
-            <Stack spacing={2}>
+            <Stack>
                 <Text fontSize="sm" color="fg.muted">
                     Calculated base irrigation volume
                 </Text>
@@ -103,6 +94,6 @@ export default function StepIrrigationEvenArea({ data, onChange }) {
                     Calculated as: area × depth (1 mm = 1 liter per m²)
                 </Text>
             </Stack>
-        </Box>
+        </PanelSection>
     )
 }

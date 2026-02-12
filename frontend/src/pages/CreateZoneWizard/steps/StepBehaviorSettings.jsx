@@ -16,6 +16,8 @@ import {
 
 import FrequencyTimeline from "../../../components/FrequencyTimeline"
 
+import PanelSection from "../../../components/layout/PanelSection"
+
 export default function StepBehaviorSettings({ data, onChange }) {
     const {
         local_correction_factors,
@@ -87,28 +89,15 @@ export default function StepBehaviorSettings({ data, onChange }) {
     ]
 
     return (
-        <Stack spacing={8} gap={10}>
+        <Stack gap={10}>
             {/* ======================================================
                 SECTION: Frequency & Scheduling
             ====================================================== */}
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                textAlign="left"
-                p={4}
+            <PanelSection
+                title="Frequency & Scheduling"
+                description="Define how often this zone is allowed to irrigate and how strictly the system follows the schedule."
             >
-                <Heading size="sm" mb={4} color="teal.600">
-                    Frequency & Scheduling
-                </Heading>
-
-                <Text fontSize="sm" color="fg.muted" mb={6}>
-                    Define how often this zone is allowed to irrigate and how
-                    strictly the system follows the schedule.
-                </Text>
-
-                <Stack spacing={6} gap={6}>
+                <Stack gap={6}>
                     {/* Dynamic interval switch */}
                     <Field.Root colorPalette="teal">
                         <Field.Label>Dynamic irrigation interval</Field.Label>
@@ -304,28 +293,15 @@ export default function StepBehaviorSettings({ data, onChange }) {
                         />
                     )}
                 </Stack>
-            </Box>
+            </PanelSection>
 
             {/* ======================================================
                 SECTION: Local Weather Corrections
             ====================================================== */}
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                textAlign="left"
+            <PanelSection
+                title="Local Weather Corrections"
+                description="Fine-tune how strongly different weather conditions affect irrigation volume for this zone."
             >
-                <Heading size="sm" mb={4} color="teal.600">
-                    Local Weather Corrections
-                </Heading>
-
-                <Text fontSize="sm" color="fg.muted" mb={6}>
-                    Fine-tune how strongly different weather conditions affect
-                    irrigation volume for this zone.
-                </Text>
-
                 <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
                     {[
                         { key: "solar", label: "Solar" },
@@ -366,29 +342,16 @@ export default function StepBehaviorSettings({ data, onChange }) {
                         </Field.Root>
                     ))}
                 </SimpleGrid>
-            </Box>
+            </PanelSection>
 
             {/* ======================================================
                 SECTION: Weather Data Fallback Strategy
             ====================================================== */}
-            <Box
-                bg="bg.panel"
-                borderWidth="1px"
-                borderColor="border"
-                borderRadius="md"
-                p={4}
-                textAlign="left"
+            <PanelSection
+                title="Weather Data Fallback Strategy"
+                description="Define how the system should behave if weather data is missing or outdated."
             >
-                <Heading size="sm" mb={2} color="teal.600">
-                    Weather Data Fallback Strategy
-                </Heading>
-
-                <Text fontSize="sm" color="fg.muted" mb={6}>
-                    Define how the system should behave if weather data is
-                    missing or outdated.
-                </Text>
-
-                <Stack spacing={4}>
+                <Stack>
                     {[
                         {
                             key: "on_fresh_weather_data_unavailable",
@@ -465,7 +428,7 @@ export default function StepBehaviorSettings({ data, onChange }) {
                         </Box>
                     ))}
                 </Stack>
-            </Box>
+            </PanelSection>
         </Stack>
     )
 }

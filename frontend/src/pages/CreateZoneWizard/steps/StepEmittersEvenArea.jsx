@@ -13,6 +13,8 @@ import {
     Separator,
 } from "@chakra-ui/react"
 
+import PanelSection from "../../../components/layout/PanelSection"
+
 const EMITTER_PRESETS = [
     { type: "dripper", label: "Dripper", icon: "💧" },
     { type: "soaker_hose", label: "Soaker hose", icon: "〰️" },
@@ -57,25 +59,12 @@ export default function StepEmittersEvenArea({ data, onChange }) {
     )
 
     return (
-        <Box
-            bg="bg.panel"
-            borderWidth="1px"
-            borderColor="border"
-            borderRadius="md"
-            p={4}
-            textAlign="left"
+        <PanelSection
+            title="Emitters configuration"
+            description="Define the emitters used across this zone. The system assumes these emitters are distributed evenly over the irrigated area."
         >
-            <Heading size="sm" mb={2} color="teal.600">
-                Emitters configuration
-            </Heading>
-
-            <Text fontSize="sm" color="fg.muted" mb={6}>
-                Define the emitters used across this zone. The system assumes
-                these emitters are distributed evenly over the irrigated area.
-            </Text>
-
             {/* Add emitter buttons */}
-            <HStack spacing={3} mb={6}>
+            <HStack mb={6}>
                 {EMITTER_PRESETS.map((preset) => (
                     <Button
                         key={preset.type}
@@ -99,18 +88,10 @@ export default function StepEmittersEvenArea({ data, onChange }) {
                         totalFlow > 0 ? Math.round((flow / totalFlow) * 100) : 0
 
                     return (
-                        <Box
-                            key={index}
-                            p={4}
-                            borderRadius="lg"
-                            bg="bg.panel"
-                            boxShadow="sm"
-                            borderWidth="1px"
-                            borderColor="border.subtle"
-                        >
+                        <PanelSection key={index}>
                             {/* Header */}
                             <HStack justify="space-between" mb={3}>
-                                <HStack spacing={3}>
+                                <HStack>
                                     <Box fontSize="xl">
                                         {emitter.type === "dripper" && "💧"}
                                         {emitter.type === "soaker_hose" && "〰️"}
@@ -131,8 +112,8 @@ export default function StepEmittersEvenArea({ data, onChange }) {
                                 </Button>
                             </HStack>
 
-                            <Stack spacing={3}>
-                                <HStack spacing={3}>
+                            <Stack>
+                                <HStack>
                                     <Field.Root>
                                         <Field.Label>Flow rate (l/h)</Field.Label>
                                         <Input
@@ -184,7 +165,7 @@ export default function StepEmittersEvenArea({ data, onChange }) {
                                     </Text>
                                 </Box>
                             </Stack>
-                        </Box>
+                        </PanelSection>
                     )
                 })}
             </SimpleGrid>
@@ -192,7 +173,7 @@ export default function StepEmittersEvenArea({ data, onChange }) {
             <Separator my={6} />
 
             {/* Total flow */}
-            <Stack spacing={1}>
+            <Stack>
                 <Text fontSize="sm" color="fg.muted">
                     Total zone flow
                 </Text>
@@ -203,6 +184,6 @@ export default function StepEmittersEvenArea({ data, onChange }) {
                     Sum of all emitter flows in this zone
                 </Text>
             </Stack>
-        </Box>
+        </PanelSection>
     )
 }

@@ -1,10 +1,19 @@
+import { useState } from "react"
+
 import {
     Box,
     Heading,
     Text,
     SimpleGrid,
     Stack,
+    Switch,
+    Field,
+    RadioGroup,
+    HStack,
 } from "@chakra-ui/react"
+
+import PanelSection from "../../../components/layout/PanelSection"
+import { a } from "framer-motion/client"
 
 function ModeCard({ icon, title, description, bullets, active, onClick }) {
     return (
@@ -22,7 +31,7 @@ function ModeCard({ icon, title, description, bullets, active, onClick }) {
                 bg: "teal.50",
             }}
         >
-            <Stack spacing={3} textAlign="left">
+            <Stack textAlign="left">
                 <Box fontSize="2xl">
                     {icon}
                 </Box>
@@ -35,7 +44,7 @@ function ModeCard({ icon, title, description, bullets, active, onClick }) {
                     {description}
                 </Text>
 
-                <Stack spacing={1} mt={2}>
+                <Stack mt={2}>
                     {bullets.map((b, i) => (
                         <Text key={i} fontSize="sm">
                             • {b}
@@ -48,24 +57,14 @@ function ModeCard({ icon, title, description, bullets, active, onClick }) {
 }
 
 export default function StepIrrigationMode({ value, onChange }) {
+    const [autoOptimize, setAutoOptimize] = useState(true)
+
     return (
-        <Box
-            bg="bg.panel"
-            borderWidth="1px"
-            borderColor="border"
-            borderRadius="md"
-            p={4}
-            textAlign="left"
+        <PanelSection
+            title="Irrigation Strategy"
+            description="Choose how the base irrigation volume for this zone is calculated.
+                This decision affects all following configuration steps."
         >
-            <Heading size="sm" mb={4} color="teal.600">
-                Irrigation Strategy
-            </Heading>
-
-            <Text fontSize="sm" color="fg.muted" mb={4}>
-                Choose how the base irrigation volume for this zone is calculated.
-                This decision affects all following configuration steps.
-            </Text>
-
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
                 <ModeCard
                     icon="🌿"
@@ -93,6 +92,6 @@ export default function StepIrrigationMode({ value, onChange }) {
                     onClick={() => onChange("per_plant")}
                 />
             </SimpleGrid>
-        </Box>
+        </PanelSection>
     )
 }
