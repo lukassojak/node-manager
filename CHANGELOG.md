@@ -5,19 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+
+## [0.6.0] - 2026-02-15
 
 ### Added
 - Backend dockerfile and .dockerignore for containerized deployment
 - Docker Compose setup
 - `optimization.py` schema for computing optimal emitter configurations based on plant-level water needs
+- Backend per-plant irrigation optimization engine (brute-force implementation).
+- Optimization respects:
+  - per-plant tolerance
+  - per-plant max emitter quantity
+  - global dripper availability
+  - shared irrigation time across all plants
+- Aggregated dripper usage summary returned in API response.
+- Unit tests covering basic optimization scenarios and constraints.
+- Integration of optimization engine into zone creation flow in frontend wizard.
 
 ### Changed
 
 ### Fixed
 
 ### Known Issues
+- Optimization algorithm is currently brute-force and may not scale well with larger plant counts (5 or more) or more complex constraints (4 or more dripper types).
 
+### Planned Improvements
+- Optimization algorithm should be improved with time penalty (irrigation time) and heuristic pruning to handle larger plant counts efficiently.
 ---
 
 ## [0.5.0] - 2026-01-01

@@ -18,6 +18,7 @@ import StepIrrigationEvenArea from "./steps/StepIrrigationEvenArea"
 import StepIrrigationPerPlant from "./steps/StepIrrigationPerPlant"
 import StepEmittersEvenArea from "./steps/StepEmittersEvenArea"
 import StepEmittersPerPlant from "./steps/StepEmittersPerPlant"
+import StepEmittersPerPlantAuto from "./steps/StepEmittersPerPlantAuto"
 import StepBehaviorSettings from "./steps/StepBehaviorSettings"
 import StepReview from "./steps/StepReview"
 import HelpBox from "../../components/HelpBox"
@@ -175,6 +176,25 @@ export default function Wizard() {
                                 })
                             }
                         />
+                    ) : autoOptimize ? (
+                        <StepEmittersPerPlantAuto
+                            data={zoneDraft.emitters_configuration || {}}
+                            onChange={(config) =>
+                                setZoneDraft(prev => ({
+                                    ...prev,
+                                    emitters_configuration: config,
+                                }))
+                            }
+                            onIrrigationChange={(config) =>
+                                setZoneDraft(prev => ({
+                                    ...prev,
+                                    irrigation_configuration: {
+                                        ...prev.irrigation_configuration,
+                                        ...config,
+                                    },
+                                }))
+                            }
+                        />
                     ) : (
                         <StepEmittersPerPlant
                             data={zoneDraft.emitters_configuration || {}}
@@ -235,6 +255,8 @@ export default function Wizard() {
         if (currentStep < steps.length - 1) {
             setCurrentStep((s) => s + 1)
         }
+        // For debugging, show zoneDraft in console on next
+        console.log("Current zone draft:", zoneDraft)
     }
 
     const goBack = () => {
@@ -332,7 +354,7 @@ export default function Wizard() {
 
             <SimpleGrid columns={{ base: 1, lg: 3 }} gap={6}>
                 {/* Main column */}
-                <Stack spacing={6} gridColumn="span 2">
+                <Stack gap={6} gridColumn="span 2">
                     <Box
                         key={activeStep.key}
                         animation="fadeSlideIn 0.25s ease-out"

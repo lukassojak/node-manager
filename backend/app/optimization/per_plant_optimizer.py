@@ -1,4 +1,5 @@
 from copy import deepcopy
+from time import time
 
 from app.schemas.optimization import (
     PerPlantOptimizationRequest,
@@ -7,15 +8,31 @@ from app.schemas.optimization import (
     PlantOptimizationResult
 )
 
+MAX_TIME_HOURS = 3
+MAX_RUNTIME_SECONDS = 300
 
 # TODO (Phase 2 improvement):
-# Currently the optimizer minimizes number of emitters only.
-# Irrigation time (T) is not constrained and may become arbitrarily large.
-#
-# In the future we should:
-# - add max irrigation time constraint OR
-# - introduce time penalty into optimization score OR
-# - make max irrigation time configurable from UI.
+# Currently irrigation time is limited by hard constant MAX_TIME_HOURS.
+# In the future this should:
+# - be configurable
+# - or replaced with time penalty in optimization score
+
+
+
+# Custom exceptions
+class NoSolutionException(Exception):
+    """
+    Raised when no solution can be found for a plant or globally.
+    """
+    def __init__(self, message):
+        super().__init__(message)
+    
+class InfeasibleSolutionException(Exception):
+    """
+    Raised when a solution is found but it does not meet the constraints (e.g. T intersection is empty).
+    """
+    def __init__(self, message):
+        super().__init__(message)
 
 
 class PerPlantOptimizer:
@@ -29,7 +46,8 @@ class PerPlantOptimizer:
     # PUBLIC METHOD
     # ===============================
 
-    def optimize(self):
+    def optimize(self) -> PerPlantOptimizationResponse:
+        self._best_solution = None
 
         # 1) Generate candidates per plant
         plant_candidates = {}
@@ -37,7 +55,7 @@ class PerPlantOptimizer:
         for plant in self.plants:
             candidates = self._generate_candidates_for_plant(plant)
             if not candidates:
-                raise Exception(f"No solution for plant {plant.plant_id}")
+                raise NoSolutionException(f"No candidates found for plant {plant.plant_id} with target volume {plant.target_volume_liters}L and tolerance {plant.tolerance_percent}%")
             plant_candidates[plant.plant_id] = candidates
 
         # 2) Brute force all plant combinations
@@ -46,6 +64,7 @@ class PerPlantOptimizer:
         best_T = None
 
         # Recursively search for the best combination of candidates across all plants
+        self._start_time = time()
         self._search_combinations(
             plant_ids=list(plant_candidates.keys()),
             plant_candidates=plant_candidates,
@@ -61,7 +80,7 @@ class PerPlantOptimizer:
         best_solution = self._best_solution
 
         if best_solution is None:
-            raise Exception("No feasible global solution found")
+            raise NoSolutionException("No global solution found that satisfies all constraints.")
 
         return self._build_response(best_solution)
 
@@ -177,6 +196,8 @@ class PerPlantOptimizer:
         current_selection,
         best_holder
     ):
+        if time() - self._start_time > MAX_RUNTIME_SECONDS:
+            raise TimeoutError("Optimization exceeded maximum runtime of {} seconds".format(MAX_RUNTIME_SECONDS))
 
         if index >= len(plant_ids):
             self._evaluate_solution(current_selection, best_holder)
@@ -198,7 +219,7 @@ class PerPlantOptimizer:
 
         # 1) Check T intersection
         t_min_global = 0
-        t_max_global = float("inf")
+        t_max_global = MAX_TIME_HOURS
 
         total_emitters = 0
         dripper_usage = {}
@@ -255,7 +276,7 @@ class PerPlantOptimizer:
         # BUILD RESPONSE
         # ===============================
 
-    def _build_response(self, best_solution_tuple):
+    def _build_response(self, best_solution_tuple) -> PerPlantOptimizationResponse:
 
         selection, chosen_T_hours = best_solution_tuple
 

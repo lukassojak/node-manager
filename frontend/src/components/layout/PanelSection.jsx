@@ -4,15 +4,17 @@ export default function PanelSection({
     title,
     description,
     children,
+    borderColor = "border", // Default border color
 }) {
     return (
         <Box
             bg="bg.panel"
             borderWidth="1px"
-            borderColor="border"
+            borderColor={borderColor}
             borderRadius="md"
             p={4}
             textAlign="left"
+            boxShadow="sm"
         >
             {(title || description) && (
                 <Stack mb={4}>

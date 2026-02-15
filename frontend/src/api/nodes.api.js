@@ -28,3 +28,7 @@ export function deleteNode(nodeId) {
 export function deleteZone(nodeId, zoneId) {
     return http.delete(`/nodes/${nodeId}/zones/${zoneId}`)
 }
+
+export function optimizePerPlant(payload) {
+    return http.post("/optimization/per-plant", payload)
+}
