@@ -9,7 +9,7 @@ from app.schemas.optimization import (
 )
 
 MAX_TIME_HOURS = 3
-MAX_RUNTIME_SECONDS = 300
+MAX_RUNTIME_SECONDS = 30
 
 # TODO (Phase 2 improvement):
 # Currently irrigation time is limited by hard constant MAX_TIME_HOURS.

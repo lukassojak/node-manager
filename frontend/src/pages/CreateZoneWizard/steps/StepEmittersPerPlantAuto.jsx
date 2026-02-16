@@ -580,7 +580,7 @@ export default function StepEmittersPerPlantAuto({ data, onChange, onIrrigationC
                         borderColor="teal.200"
                         boxShadow="sm"
                     >
-                        <SimpleGrid columns={{ base: 1, md: 4 }} gap={6}>
+                        <SimpleGrid columns={{ base: 2, md: 4 }} gap={6}>
 
                             <Box>
                                 <Text fontSize="sm" color="fg.muted">
@@ -605,7 +605,7 @@ export default function StepEmittersPerPlantAuto({ data, onChange, onIrrigationC
                                     Base irrigation time
                                 </Text>
                                 <Text fontSize="xl" fontWeight="bold" color="teal.700">
-                                    {proposal.base_irrigation_time_seconds}s
+                                    {proposal.base_irrigation_time_seconds.toFixed(0)} s
                                 </Text>
                             </Box>
 
@@ -736,7 +736,7 @@ export default function StepEmittersPerPlantAuto({ data, onChange, onIrrigationC
                             Dripper usage summary
                         </Text>
 
-                        <SimpleGrid columns={{ base: 2, md: 4 }} gap={4}>
+                        <SimpleGrid columns={{ base: 3, md: 4 }} gap={4}>
                             {proposal.drippers_used_detail.map((d, index) => (
                                 <Box
                                     key={index}

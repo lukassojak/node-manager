@@ -26,6 +26,9 @@ import HelpSidebar from "../../components/HelpSidebar"
 
 import { wizardHelp } from "../../help/WizardHelp"
 
+import GlassPageHeader, { HeaderActions } from '../../components/layout/GlassPageHeader'
+import { HeaderAction, HeaderActionDanger } from '../../components/ui/ActionButtons'
+
 export default function Wizard() {
     const { nodeId } = useParams()
     const navigate = useNavigate()
@@ -317,111 +320,115 @@ export default function Wizard() {
     -------------------------------------------- */
 
     return (
-        <Box p={6} textAlign="left">
-            <HStack mb={6} justify="space-between">
-                <Stack spacing={2} alignItems="flex-start">
-                    <Heading>Create new zone</Heading>
-                    <Text>Node ID: {nodeId}</Text>
-                </Stack>
-                <Button
-                    as={Link}
-                    to={`/nodes/${nodeId}`}
-                    variant="outline"
-                >
-                    Exit Wizard
-                </Button>
-            </HStack>
-
-            {/* Step indicator */}
-            <HStack mb={4} spacing={2}>
-                {steps.map((step, index) => (
-                    <Box
-                        key={step.key}
-                        px={3}
-                        py={1}
-                        borderRadius="full"
-                        fontSize="sm"
-                        transition="all 0.15s ease"
-                        bg={index === currentStep ? "teal.100" : "bg.subtle"}
-                        color={index === currentStep ? "teal.700" : "fg.muted"}
-                        fontWeight={index === currentStep ? "semibold" : "normal"}
-                        transform={index === currentStep ? "scale(1.05)" : "scale(1)"}
-                    >
-                        {index + 1}. {step.title}
-                    </Box>
-                ))}
-            </HStack>
-
-            <SimpleGrid columns={{ base: 1, lg: 3 }} gap={6}>
-                {/* Main column */}
-                <Stack gap={6} gridColumn="span 2">
-                    <Box
-                        key={activeStep.key}
-                        animation="fadeSlideIn 0.25s ease-out"
-                    >
-                        {activeStep.render()}
-                    </Box>
-
-                    {submitError && activeStep.key === "review" && (
-                        <Box p={3} bg="red.50" borderRadius="md">
-                            <Text fontSize="sm" color="red.700">
-                                {submitError}
-                            </Text>
-                        </Box>
-                    )}
-
-                    <HStack>
-                        <Button
-                            variant="outline"
-                            colorPalette="teal"
-                            onClick={goBack}
-                            disabled={currentStep === 0}
+        <>
+            <GlassPageHeader
+                title="Create New Zone"
+                subtitle={`Node ID: ${nodeId}`}
+                actions={
+                    <HeaderActions>
+                        <HeaderAction
+                            as={Link}
+                            to={`/nodes/${nodeId}`}
                         >
-                            Back
-                        </Button>
+                            Exit Wizard
+                        </HeaderAction>
+                    </HeaderActions>
+                }
+            >
+            </GlassPageHeader>
 
-                        {activeStep.key !== "review" ? (
+            <Box p={6} textAlign="left">
+                {/* Step indicator */}
+                <HStack mb={4} spacing={2}>
+                    {steps.map((step, index) => (
+                        <Box
+                            key={step.key}
+                            px={3}
+                            py={1}
+                            borderRadius="full"
+                            fontSize="sm"
+                            transition="all 0.15s ease"
+                            bg={index === currentStep ? "teal.100" : "bg.subtle"}
+                            color={index === currentStep ? "teal.700" : "fg.muted"}
+                            fontWeight={index === currentStep ? "semibold" : "normal"}
+                            transform={index === currentStep ? "scale(1.05)" : "scale(1)"}
+                        >
+                            {index + 1}. {step.title}
+                        </Box>
+                    ))}
+                </HStack>
+
+                <SimpleGrid columns={{ base: 1, lg: 3 }} gap={6}>
+                    {/* Main column */}
+                    <Stack gap={6} gridColumn="span 2">
+                        <Box
+                            key={activeStep.key}
+                            animation="fadeSlideIn 0.25s ease-out"
+                        >
+                            {activeStep.render()}
+                        </Box>
+
+                        {submitError && activeStep.key === "review" && (
+                            <Box p={3} bg="red.50" borderRadius="md">
+                                <Text fontSize="sm" color="red.700">
+                                    {submitError}
+                                </Text>
+                            </Box>
+                        )}
+
+                        <HStack>
                             <Button
                                 variant="outline"
                                 colorPalette="teal"
-                                onClick={goNext}
-                                disabled={!activeStep.isValid()}
+                                onClick={goBack}
+                                disabled={currentStep === 0}
                             >
-                                Next
+                                Back
                             </Button>
-                        ) : (
-                            <Button
-                                colorPalette="teal"
-                                onClick={handleSubmit}
+
+                            {activeStep.key !== "review" ? (
+                                <Button
+                                    variant="outline"
+                                    colorPalette="teal"
+                                    onClick={goNext}
+                                    disabled={!activeStep.isValid()}
+                                >
+                                    Next
+                                </Button>
+                            ) : (
+                                <Button
+                                    colorPalette="teal"
+                                    onClick={handleSubmit}
+                                >
+                                    Create Zone
+                                </Button>
+                            )}
+                        </HStack>
+                    </Stack>
+
+                    {/* Sidebar */}
+                    <HelpSidebar
+                        sticky
+                        stickyTop="80px"
+                        maxHeight="calc(100vh - 120px)"
+                    >
+                        {wizardHelp.map(box => (
+                            <HelpBox
+                                key={box.step}
+                                title={box.title}
+                                active={box.step === activeStep.key}
+                                boxRef={el => {
+                                    helpBoxRefs.current[box.step] = el
+                                }}
                             >
-                                Create Zone
-                            </Button>
-                        )}
-                    </HStack>
-                </Stack>
+                                {box.description}
+                            </HelpBox>
+                        ))}
+                    </HelpSidebar>
 
-                {/* Sidebar */}
-                <HelpSidebar
-                    sticky
-                    stickyTop="80px"
-                    maxHeight="calc(100vh - 120px)"
-                >
-                    {wizardHelp.map(box => (
-                        <HelpBox
-                            key={box.step}
-                            title={box.title}
-                            active={box.step === activeStep.key}
-                            boxRef={el => {
-                                helpBoxRefs.current[box.step] = el
-                            }}
-                        >
-                            {box.description}
-                        </HelpBox>
-                    ))}
-                </HelpSidebar>
-
-            </SimpleGrid>
-        </Box>
+                </SimpleGrid>
+            </Box>
+        </>
     )
 }
 

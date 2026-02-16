@@ -7,14 +7,15 @@ export default function PanelSection({
     borderColor = "border", // Default border color
 }) {
     return (
+        // Reactive Edge Glass visual style - Solid Surface variant
         <Box
-            bg="bg.panel"
+            bg="rgba(255,255,255,0.92)"
             borderWidth="1px"
-            borderColor={borderColor}
-            borderRadius="md"
-            p={4}
+            borderColor="rgba(56,178,172,0.06)"
+            borderRadius="lg"
+            p={5}
+            boxShadow="0 4px 16px rgba(15, 23, 42, 0.05)"
             textAlign="left"
-            boxShadow="sm"
         >
             {(title || description) && (
                 <Stack mb={4}>
