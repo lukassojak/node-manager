@@ -52,7 +52,7 @@ export default function NodeDetailPage() {
                             onClick={() => {
                                 if (!confirm("Are you sure you want to delete this node and all its zones?")) return
                                 deleteNode(node.id)
-                                    .then(() => navigate("/"))
+                                    .then(() => navigate("/configuration/"))
                                     .catch(() => alert("Failed to delete node"))
                             }}
                         >
@@ -60,15 +60,15 @@ export default function NodeDetailPage() {
                         </HeaderActionDanger>
                         <HeaderAction
                             as={Link}
-                            to={`/nodes/${node.id}/zones/new`}
+                            to={`/configuration/nodes/${node.id}/zones/new`}
                         >
                             Create new zone
                         </HeaderAction>
                         <HeaderAction
                             as={Link}
-                            to="/"
+                            to="/configuration/nodes"
                         >
-                            &larr; Back to Dashboard
+                            &larr; Back
                         </HeaderAction>
                     </HeaderActions>
                 }

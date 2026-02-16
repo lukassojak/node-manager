@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Introduced global `AppLayout` with structural sidebar navigation
+- Implemented modular navigation structure for Smart Irrigation System:
+  - Runtime section (Dashboard, Manual Control, Notifications, Monitoring)
+  - History section (Statistics, Weather History)
+  - Configuration section (Nodes, Create Node)
+  - System section (Settings)
+- Added reusable sidebar components:
+  - `Sidebar`
+  - `SidebarSection`
+  - `SidebarItem`
+
+### Changed
+- Refactored routing to nested layout structure using `AppLayout` and `Outlet`
+- Moved Node Manager UI under `/configuration` route namespace
+- Updated all navigation links to reflect new modular route structure
+- Established architectural separation between Runtime and Configuration modules
+
+### Fixed
+
+### Known Issues
+- Optimization algorithm is currently brute-force and may not scale well with larger plant counts (5 or more) or more complex constraints (4 or more dripper types).
+
+### Planned Improvements
+- Optimization algorithm should be improved with time penalty (irrigation time) and heuristic pruning to handle larger plant counts efficiently.
+- Implement collapsible sidebar
+- Introduce runtime dashboard widgets
+
+---
+
 ## [0.7.0] - 2026-02-16
 
 ### Added
@@ -27,8 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned Improvements
 - Optimization algorithm should be improved with time penalty (irrigation time) and heuristic pruning to handle larger plant counts efficiently.
-
----
 
 ---
 

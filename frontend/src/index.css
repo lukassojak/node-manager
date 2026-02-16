@@ -6,11 +6,11 @@ body::before {
     z-index: -1;
 
     background: linear-gradient(120deg,
-            #f7f9fb 35%,
-            #fafefd 45%,
+            #eff1f3 35%,
+            #f2f6f5 45%,
             #f0fffc 50%,
             /* change back to #f0fffc */
-            #f7f9fb 80%);
+            #eff1f3 80%);
     background-size: 200% 200%;
 
     animation: bg-waves 30s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;

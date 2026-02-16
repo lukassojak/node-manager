@@ -31,10 +31,10 @@ export default function DashboardPage() {
                 subtitle="Manage your nodes and their zones"
                 actions={
                     <HeaderActions>
-                        <HeaderAction as={Link} to="/settings">
+                        <HeaderAction as={Link} to="/configuration/settings">
                             Settings
                         </HeaderAction>
-                        <HeaderAction as={Link} to="/nodes/new">
+                        <HeaderAction as={Link} to="/configuration/nodes/new">
                             Add Node
                         </HeaderAction>
                     </HeaderActions>
@@ -67,7 +67,6 @@ export default function DashboardPage() {
                         <NodeCard
                             key={node.id}
                             node={node}
-                            variant="edge" // or solid | glass | accent
                         />
                     ))}
                 </SimpleGrid>

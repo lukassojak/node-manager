@@ -6,7 +6,7 @@ export default function NodeCard({ node }) {
     return (
         <Box
             as={Link}
-            to={`/nodes/${node.id}`}
+            to={`/configuration/nodes/${node.id}`}
             borderRadius="lg"
             p={6}
             bg="rgba(255,255,255,0.92)"

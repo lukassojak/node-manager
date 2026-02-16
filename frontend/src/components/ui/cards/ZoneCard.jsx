@@ -7,7 +7,7 @@ export default function ZoneCard({ nodeId, zone }) {
     return (
         <Box
             as={Link}
-            to={`/nodes/${nodeId}/zones/${zone.id}`}
+            to={`/configuration/nodes/${nodeId}/zones/${zone.id}`}
             borderRadius="lg"
             p={6}
             bg="rgba(255,255,255,0.92)"

@@ -88,7 +88,7 @@ export default function CreateNodePage() {
                 subtitle="Configure settings for your new irrigation node"
                 actions={
                     <HeaderActions>
-                        <HeaderAction as={Link} to="/">
+                        <HeaderAction as={Link} to="/configuration/nodes">
                             Cancel
                         </HeaderAction>
                     </HeaderActions>

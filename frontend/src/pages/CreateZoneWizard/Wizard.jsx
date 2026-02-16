@@ -271,7 +271,7 @@ export default function Wizard() {
     const handleSubmit = () => {
         createZone(nodeId, zoneDraft)
             .then((res) =>
-                navigate(`/nodes/${nodeId}/zones/${res.data.id}`)
+                navigate(`/configuration/nodes/${nodeId}/zones/${res.data.id}`)
             )
             .catch((error) => {
                 console.error("Create zone failed:", error)
@@ -328,7 +328,7 @@ export default function Wizard() {
                     <HeaderActions>
                         <HeaderAction
                             as={Link}
-                            to={`/nodes/${nodeId}`}
+                            to={`/configuration/nodes/${nodeId}`}
                         >
                             Exit Wizard
                         </HeaderAction>

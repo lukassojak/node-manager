@@ -15,26 +15,6 @@ import { HeaderAction, HeaderActionDanger } from '../components/ui/ActionButtons
 import { zoneDetailHelp } from "../help/zoneDetailHelp"
 
 
-function JsonBlock({ title, data }) {
-    return (
-        <Box mt={4}>
-            <Heading size="sm" mb={2}>{title}</Heading>
-            <Box
-                as="pre"
-                p={3}
-                bg="gray.50"
-                borderRadius="md"
-                fontSize="sm"
-                overflowX="auto"
-                textAlign="left"
-            >
-                {JSON.stringify(data, null, 2)}
-            </Box>
-        </Box>
-    )
-}
-
-
 export default function ZoneDetailPage() {
     const { nodeId, zoneId } = useParams();
     const navigate = useNavigate();
@@ -69,7 +49,7 @@ export default function ZoneDetailPage() {
                             onClick={() => {
                                 if (!confirm("Are you sure?")) return
                                 deleteZone(nodeId, zone.id)
-                                    .then(() => navigate("/nodes/" + nodeId))
+                                    .then(() => navigate("/configuration/nodes/" + nodeId))
                             }}
                         >
                             Delete zone
@@ -77,7 +57,7 @@ export default function ZoneDetailPage() {
 
                         <HeaderAction
                             as={Link}
-                            to={`/nodes/${nodeId}`}
+                            to={`/configuration/nodes/${nodeId}`}
                         >
                             ← Back to Node #{nodeId}
                         </HeaderAction>
