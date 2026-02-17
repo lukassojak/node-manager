@@ -14,7 +14,7 @@ import {
     Separator,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
 const EMITTER_PRESETS = [
     { type: "dripper", label: "Dripper", icon: "💧", defaultFlow: 2 },

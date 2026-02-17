@@ -10,7 +10,7 @@ import {
     Button,
 } from "@chakra-ui/react"
 
-import { createZone } from "../../api/nodes.api"
+import { createZone } from "../../../../api/nodes.api"
 
 import StepBasicInfo from "./steps/StepBasicInfo"
 import StepIrrigationMode from "./steps/StepIrrigationMode"
@@ -21,13 +21,14 @@ import StepEmittersPerPlant from "./steps/StepEmittersPerPlant"
 import StepEmittersPerPlantAuto from "./steps/StepEmittersPerPlantAuto"
 import StepBehaviorSettings from "./steps/StepBehaviorSettings"
 import StepReview from "./steps/StepReview"
-import HelpBox from "../../components/HelpBox"
-import HelpSidebar from "../../components/HelpSidebar"
 
-import { wizardHelp } from "../../help/WizardHelp"
+import HelpBox from "../../../../components/HelpBox"
+import HelpSidebar from "../../../../components/HelpSidebar"
 
-import GlassPageHeader, { HeaderActions } from '../../components/layout/GlassPageHeader'
-import { HeaderAction, HeaderActionDanger } from '../../components/ui/ActionButtons'
+import { wizardHelp } from "../../../../help/WizardHelp"
+
+import GlassPageHeader, { HeaderActions } from '../../../../components/layout/GlassPageHeader'
+import { HeaderAction, HeaderActionDanger } from '../../../../components/ui/ActionButtons'
 
 export default function Wizard() {
     const { nodeId } = useParams()

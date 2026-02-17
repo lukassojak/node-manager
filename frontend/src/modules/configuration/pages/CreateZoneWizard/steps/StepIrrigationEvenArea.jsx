@@ -9,7 +9,7 @@ import {
     Separator,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
 export default function StepIrrigationEvenArea({ data, onChange }) {
     const zoneArea = data.zone_area_m2 || ""

@@ -56,22 +56,22 @@ export default function Sidebar() {
                     <SidebarItem to="/dashboard" icon={LayoutDashboard}>
                         Dashboard
                     </SidebarItem>
-                    <SidebarItem to="/runtime/manual" icon={Droplets}>
+                    <SidebarItem to="/manual" icon={Droplets}>
                         Manual Control
                     </SidebarItem>
-                    <SidebarItem to="/runtime/notifications" icon={Bell}>
+                    <SidebarItem to="/notifications" icon={Bell}>
                         Notifications
                     </SidebarItem>
-                    <SidebarItem to="/runtime/monitoring" icon={Activity}>
+                    <SidebarItem to="/monitoring" icon={Activity}>
                         Monitoring
                     </SidebarItem>
                 </SidebarSection>
 
                 <SidebarSection title="History">
-                    <SidebarItem to="/history/statistics" icon={BarChart3}>
+                    <SidebarItem to="/statistics" icon={BarChart3}>
                         Statistics
                     </SidebarItem>
-                    <SidebarItem to="/history/weather" icon={Cloud}>
+                    <SidebarItem to="/weather" icon={Cloud}>
                         Weather History
                     </SidebarItem>
                 </SidebarSection>
@@ -86,7 +86,7 @@ export default function Sidebar() {
                 </SidebarSection>
 
                 <SidebarSection title="System">
-                    <SidebarItem to="/system/settings" icon={Settings}>
+                    <SidebarItem to="/settings" icon={Settings}>
                         Settings
                     </SidebarItem>
                 </SidebarSection>

@@ -12,13 +12,13 @@ import {
     Badge
 } from "@chakra-ui/react"
 
-import { fetchNodeById, deleteNode } from "../api/nodes.api"
+import { fetchNodeById, deleteNode } from "../../../api/nodes.api"
 
-import { LimitedCorrectionIndicator } from "../components/CorrectionIndicator"
-import PanelSection from "../components/layout/PanelSection"
-import GlassPageHeader, { HeaderActions } from '../components/layout/GlassPageHeader'
-import { HeaderAction, HeaderActionDanger } from '../components/ui/ActionButtons'
-import ZoneCard from "../components/ui/cards/ZoneCard"
+import { LimitedCorrectionIndicator } from "../../../components/CorrectionIndicator"
+import PanelSection from "../../../components/layout/PanelSection"
+import GlassPageHeader, { HeaderActions } from '../../../components/layout/GlassPageHeader'
+import { HeaderAction, HeaderActionDanger } from '../../../components/ui/ActionButtons'
+import ZoneCard from "../../../components/ui/cards/ZoneCard"
 
 
 

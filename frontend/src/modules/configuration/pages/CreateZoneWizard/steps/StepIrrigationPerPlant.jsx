@@ -13,7 +13,7 @@ import {
     SimpleGrid,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
 export default function StepIrrigationPerPlant({ data, autoOptimize, onChange, onAutoOptimizeChange }) {
     const baseVolume = data.base_target_volume_liters || ""

@@ -9,13 +9,13 @@ import {
     SimpleGrid,
 } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
-import { fetchNodes } from "../api/nodes.api"
-import GlassPageHeader, { HeaderActions } from '../components/layout/GlassPageHeader'
-import { HeaderAction } from '../components/ui/ActionButtons'
-import NodeCard from "../components/ui/cards/NodeCard"
+import { fetchNodes } from "../../../api/nodes.api"
+import GlassPageHeader, { HeaderActions } from '../../../components/layout/GlassPageHeader'
+import { HeaderAction } from '../../../components/ui/ActionButtons'
+import NodeCard from "../../../components/ui/cards/NodeCard"
 
 
-export default function DashboardPage() {
+export default function NodesDashboardPage() {
     const [nodes, setNodes] = useState([])
 
     useEffect(() => {

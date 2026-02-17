@@ -11,10 +11,10 @@ import {
 
 import { useState } from "react"
 
-import FrequencyTimeline from "../../../components/FrequencyTimeline"
-import PanelSection from "../../../components/layout/PanelSection"
+import FrequencyTimeline from "../../../../../components/FrequencyTimeline"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
-import { FullCorrectionIndicator } from "../../../components/CorrectionIndicator"
+import { FullCorrectionIndicator } from "../../../../../components/CorrectionIndicator"
 
 export default function StepReview({ data }) {
     const [showRawData, setShowRawData] = useState(false)

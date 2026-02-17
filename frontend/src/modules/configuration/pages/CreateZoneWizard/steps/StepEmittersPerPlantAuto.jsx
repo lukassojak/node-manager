@@ -15,8 +15,8 @@ import {
     Alert,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
-import { optimizePerPlant } from "../../../api/nodes.api"
+import PanelSection from "../../../../../components/layout/PanelSection"
+import { optimizePerPlant } from "../../../../../api/nodes.api"
 
 const MIN_LOADING_TIME = 3000 // Minimum loading time in milliseconds to ensure the user sees the loading state
 const DRIPPER_PRESETS = [1.2, 2, 4, 8]

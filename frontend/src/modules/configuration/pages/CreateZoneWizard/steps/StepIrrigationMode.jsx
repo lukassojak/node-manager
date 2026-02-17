@@ -12,7 +12,8 @@ import {
     HStack,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
+
 import { a } from "framer-motion/client"
 
 function ModeCard({ icon, title, description, bullets, active, onClick }) {

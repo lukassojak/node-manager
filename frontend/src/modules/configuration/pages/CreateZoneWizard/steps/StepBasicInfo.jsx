@@ -9,7 +9,7 @@ import {
     Text,
 } from "@chakra-ui/react"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
 export default function StepBasicInfo({ data, onChange }) {
     const update = (patch) => {

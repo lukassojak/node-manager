@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { SimpleGrid, DataList, Badge, HStack, Button, Stack, Box, Heading, Text } from '@chakra-ui/react'
-import { fetchZoneById, deleteZone } from '../api/nodes.api'
+import { fetchZoneById, deleteZone } from '../../../api/nodes.api'
 
-import FrequencyTimeline from '../components/FrequencyTimeline'
-import { FullCorrectionIndicator } from '../components/CorrectionIndicator'
+import FrequencyTimeline from '../../../components/FrequencyTimeline'
+import { FullCorrectionIndicator } from '../../../components/CorrectionIndicator'
 
-import HelpSidebar from "../components/HelpSidebar"
-import HelpBox from "../components/HelpBox"
-import PanelSection from '../components/layout/PanelSection'
-import GlassPageHeader, { HeaderActions } from '../components/layout/GlassPageHeader'
-import { HeaderAction, HeaderActionDanger } from '../components/ui/ActionButtons'
+import HelpSidebar from "../../../components/HelpSidebar"
+import HelpBox from "../../../components/HelpBox"
+import PanelSection from '../../../components/layout/PanelSection'
+import GlassPageHeader, { HeaderActions } from '../../../components/layout/GlassPageHeader'
+import { HeaderAction, HeaderActionDanger } from '../../../components/ui/ActionButtons'
 
-import { zoneDetailHelp } from "../help/zoneDetailHelp"
+import { zoneDetailHelp } from "../../../help/zoneDetailHelp"
 
 
 export default function ZoneDetailPage() {

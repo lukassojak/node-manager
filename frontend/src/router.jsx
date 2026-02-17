@@ -1,9 +1,12 @@
 import { createBrowserRouter } from "react-router-dom"
-import DashboardPage from "./pages/DashboardPage"
-import NodeDetailPage from "./pages/NodeDetailPage"
-import CreateNodePage from "./pages/CreateNodePage"
-import ZoneDetailPage from "./pages/ZoneDetailPage"
-import Wizard from "./pages/CreateZoneWizard/Wizard"
+import { Box } from "@chakra-ui/react"
+
+import MainDashboardPage from "./modules/runtime/pages/MainDashboardPage"
+import NodesDashboardPage from "./modules/configuration/pages/DashboardPage"
+import NodeDetailPage from "./modules/configuration/pages/NodeDetailPage"
+import CreateNodePage from "./modules/configuration/pages/CreateNodePage"
+import ZoneDetailPage from "./modules/configuration/pages/ZoneDetailPage"
+import Wizard from "./modules/configuration/pages/CreateZoneWizard/Wizard"
 import AppLayout from "./components/layout/AppLayout"
 
 const router = createBrowserRouter([
@@ -12,73 +15,132 @@ const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
 
-            // Runtime
-            {
-                path: "dashboard",
-                element: <DashboardPage />,
-            },
-
-            // Configuration (Node Manager)
-            {
-                path: "configuration/nodes",
-                element: <DashboardPage />, // NodeManager Dashboard
-            },
-            {
-                path: "configuration/nodes/new",
-                element: <CreateNodePage />,
-            },
-            {
-                path: "configuration/nodes/:nodeId",
-                element: <NodeDetailPage />,
-            },
-            {
-                path: "configuration/nodes/:nodeId/zones/:zoneId",
-                element: <ZoneDetailPage />,
-            },
-            {
-                path: "configuration/nodes/:nodeId/zones/new",
-                element: <Wizard />,
-            },
-
-            // History
-            {
-                path: "history/statistics",
-                element: <div>Statistics (placeholder)</div>,
-            },
-            {
-                path: "history/weather",
-                element: <div>Weather history (placeholder)</div>,
-            },
-
-            // Runtime
-            {
-                path: "runtime/manual",
-                element: <div>Manual control (placeholder)</div>,
-            },
-            {
-                path: "runtime/notifications",
-                element: <div>Notifications (placeholder)</div>,
-            },
-            {
-                path: "runtime/monitoring",
-                element: <div>Monitoring (placeholder)</div>,
-            },
-
-            // System
-            {
-                path: "system/settings",
-                element: <div>Settings (placeholder)</div>,
-            },
-
-            // Redirect root → dashboard
             {
                 index: true,
-                element: <DashboardPage />,
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Welcome to the Node Management App
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        Use the navigation menu to access different sections of the app.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "dashboard",
+                element: <MainDashboardPage />,
+            },
+
+            {
+                path: "configuration",
+                children: [
+                    {
+                        path: "nodes",
+                        element: <NodesDashboardPage />,
+                    },
+                    {
+                        path: "nodes/new",
+                        element: <CreateNodePage />,
+                    },
+                    {
+                        path: "nodes/:nodeId",
+                        element: <NodeDetailPage />,
+                    },
+                    {
+                        path: "nodes/:nodeId/zones/:zoneId",
+                        element: <ZoneDetailPage />,
+                    },
+                    {
+                        path: "nodes/:nodeId/zones/new",
+                        element: <Wizard />,
+                    }
+                ]
+            },
+
+            {
+                path: "manual",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Manual Control
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the manual control page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "notifications",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Notifications
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the notifications page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "monitoring",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Monitoring
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the monitoring page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "statistics",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Statistics
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the statistics page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "weather",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Weather History
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the weather history page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
+                path: "settings",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Settings
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the settings page placeholder.
+                    </Box>
+                </Box>
             }
 
         ]
     }
 ])
+
 
 
 export default router;

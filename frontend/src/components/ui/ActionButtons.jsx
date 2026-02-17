@@ -38,7 +38,6 @@ export function PanelButton(props) {
             transition="background 0.12s ease, box-shadow 0.12s ease, transform 0.06s ease"
             _hover={{
                 boxShadow: "0 4px 12px rgba(15,23,42,0.08)",
-                transform: "translateY(-1px)"
             }}
             _active={{
                 transform: "translateY(0px)"

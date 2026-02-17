@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { For, SegmentGroup, Switch, Field, Text, Box, Heading, Input, Button, Stack, SimpleGrid, HStack } from "@chakra-ui/react"
-import { createNode } from "../api/nodes.api"
+import { createNode } from "../../../api/nodes.api"
 
-import HelpSidebar from "../components/HelpSidebar"
-import HelpBox from "../components/HelpBox"
-import PanelSection from '../components/layout/PanelSection'
-import GlassPageHeader, { HeaderActions } from '../components/layout/GlassPageHeader'
-import { HeaderAction } from '../components/ui/ActionButtons'
+import HelpSidebar from "../../../components/HelpSidebar"
+import HelpBox from "../../../components/HelpBox"
+import PanelSection from '../../../components/layout/PanelSection'
+import GlassPageHeader, { HeaderActions } from '../../../components/layout/GlassPageHeader'
+import { HeaderAction } from '../../../components/ui/ActionButtons'
 
-import { createNodeHelp, createNodeAdvancedHelp } from "../help/createNodeHelp"
+import { createNodeHelp, createNodeAdvancedHelp } from "../../../help/createNodeHelp"
 
 
 export default function CreateNodePage() {
@@ -74,7 +74,7 @@ export default function CreateNodePage() {
 
         createNode(payload)
             .then((response) => {
-                navigate(`/nodes/${response.data.id}`)
+                navigate(`/configuration/nodes/${response.data.id}`)
             })
             .catch((error) => {
                 console.error("Failed to create node", error)

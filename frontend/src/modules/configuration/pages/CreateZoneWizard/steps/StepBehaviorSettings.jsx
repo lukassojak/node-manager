@@ -14,9 +14,9 @@ import {
     HStack,
 } from "@chakra-ui/react"
 
-import FrequencyTimeline from "../../../components/FrequencyTimeline"
+import FrequencyTimeline from "../../../../../components/FrequencyTimeline"
 
-import PanelSection from "../../../components/layout/PanelSection"
+import PanelSection from "../../../../../components/layout/PanelSection"
 
 export default function StepBehaviorSettings({ data, onChange }) {
     const {
