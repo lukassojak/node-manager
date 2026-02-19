@@ -41,7 +41,7 @@ export default function CurrentTaskCard({ task }) {
                                 colorPalette="green"
                                 variant="subtle"
                             >
-                                Running
+                                Irrigating
                             </Badge>
                         </HStack>
                     </HStack>

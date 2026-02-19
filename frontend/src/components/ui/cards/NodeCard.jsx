@@ -2,6 +2,8 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 
+import { Router } from "lucide-react"
+
 export default function NodeCard({ node }) {
     return (
         <Box
@@ -28,7 +30,7 @@ export default function NodeCard({ node }) {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    🔌
+                    <Router size={20} color="#319795" />
                 </Box>
 
                 <Stack spacing={1} flex="1">

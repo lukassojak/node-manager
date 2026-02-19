@@ -16,7 +16,9 @@ import PanelSection from "../../../../../components/layout/PanelSection"
 
 import { a } from "framer-motion/client"
 
-function ModeCard({ icon, title, description, bullets, active, onClick }) {
+import { LandPlot, Sprout } from "lucide-react"
+
+function ModeCard({ icon: Icon, title, description, bullets, active, onClick }) {
     return (
         <Box
             onClick={onClick}
@@ -34,7 +36,7 @@ function ModeCard({ icon, title, description, bullets, active, onClick }) {
         >
             <Stack textAlign="left">
                 <Box fontSize="2xl">
-                    {icon}
+                    <Icon size={28} color="#319795" />
                 </Box>
 
                 <Heading size="sm">
@@ -68,7 +70,7 @@ export default function StepIrrigationMode({ value, onChange }) {
         >
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
                 <ModeCard
-                    icon="🌿"
+                    icon={LandPlot}
                     title="Even Area"
                     description="Uniform irrigation over the entire zone area."
                     bullets={[
@@ -81,7 +83,7 @@ export default function StepIrrigationMode({ value, onChange }) {
                 />
 
                 <ModeCard
-                    icon="🌱"
+                    icon={Sprout}
                     title="Per Plant"
                     description="Individual irrigation for separate plants."
                     bullets={[

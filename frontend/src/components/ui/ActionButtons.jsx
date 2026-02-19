@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react"
 
 export function HeaderAction(props) {
     return (
-        <Button
+        <PanelButton
             size="sm"
             variant="subtle"
             colorPalette="gray"

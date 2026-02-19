@@ -12,7 +12,8 @@ import {
     BarChart3,
     Cloud,
     Settings,
-    SlidersHorizontal
+    SlidersHorizontal,
+    History,
 } from "lucide-react"
 
 export default function Sidebar() {
@@ -44,7 +45,7 @@ export default function Sidebar() {
                         Smart Irrigation
                     </Text>
                     <Text fontSize="xs" color="gray.500">
-                        v0.9.0
+                        v0.8.0
                     </Text>
                 </VStack>
             </HStack>
@@ -62,7 +63,7 @@ export default function Sidebar() {
                     <SidebarItem to="/notifications" icon={Bell}>
                         Notifications
                     </SidebarItem>
-                    <SidebarItem to="/monitoring" icon={Activity}>
+                    <SidebarItem to="/runtime/nodes" icon={Activity}>
                         Monitoring
                     </SidebarItem>
                 </SidebarSection>
@@ -70,6 +71,9 @@ export default function Sidebar() {
                 <SidebarSection title="History">
                     <SidebarItem to="/statistics" icon={BarChart3}>
                         Statistics
+                    </SidebarItem>
+                    <SidebarItem to="/irrigation-history" icon={History}>
+                        Irrigation History
                     </SidebarItem>
                     <SidebarItem to="/weather" icon={Cloud}>
                         Weather History

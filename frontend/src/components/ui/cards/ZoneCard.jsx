@@ -3,6 +3,8 @@ import { Box, Heading, Text, Stack, HStack, Badge } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 import { LimitedCorrectionIndicator } from "../../CorrectionIndicator"
 
+import { LandPlot } from "lucide-react"
+
 export default function ZoneCard({ nodeId, zone }) {
     return (
         <Box
@@ -31,7 +33,7 @@ export default function ZoneCard({ nodeId, zone }) {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    🌱
+                    <LandPlot size={20} color="#319795" />
                 </Box>
 
                 {/* Main content */}

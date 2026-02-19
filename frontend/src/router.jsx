@@ -2,12 +2,16 @@ import { createBrowserRouter } from "react-router-dom"
 import { Box } from "@chakra-ui/react"
 
 import MainDashboardPage from "./modules/runtime/pages/MainDashboardPage"
+import ManualControlPage from "./modules/runtime/pages/ManualControlPage"
 import NodesDashboardPage from "./modules/configuration/pages/DashboardPage"
 import NodeDetailPage from "./modules/configuration/pages/NodeDetailPage"
 import CreateNodePage from "./modules/configuration/pages/CreateNodePage"
 import ZoneDetailPage from "./modules/configuration/pages/ZoneDetailPage"
 import Wizard from "./modules/configuration/pages/CreateZoneWizard/Wizard"
 import AppLayout from "./components/layout/AppLayout"
+
+import RuntimeNodesPage from "./modules/runtime/pages/RuntimeNodesPage"
+import RuntimeNodeDetailPage from "./modules/runtime/pages/RuntimeNodeDetailPage"
 
 const router = createBrowserRouter([
     {
@@ -62,14 +66,7 @@ const router = createBrowserRouter([
             {
                 path: "manual",
                 // placeholder
-                element: <Box p={6}>
-                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
-                        Manual Control
-                    </Box>
-                    <Box fontSize="md" color="fg.muted">
-                        This is the manual control page placeholder.
-                    </Box>
-                </Box>
+                element: <ManualControlPage />
             },
 
             {
@@ -112,6 +109,19 @@ const router = createBrowserRouter([
             },
 
             {
+                path: "irrigation-history",
+                // placeholder
+                element: <Box p={6}>
+                    <Box fontSize="2xl" fontWeight="bold" mb={4}>
+                        Irrigation History
+                    </Box>
+                    <Box fontSize="md" color="fg.muted">
+                        This is the irrigation history page placeholder.
+                    </Box>
+                </Box>
+            },
+
+            {
                 path: "weather",
                 // placeholder
                 element: <Box p={6}>
@@ -135,6 +145,15 @@ const router = createBrowserRouter([
                         This is the settings page placeholder.
                     </Box>
                 </Box>
+            },
+
+            {
+                path: "/runtime/nodes",
+                element: <RuntimeNodesPage />
+            },
+            {
+                path: "/runtime/nodes/:nodeId",
+                element: <RuntimeNodeDetailPage />
             }
 
         ]

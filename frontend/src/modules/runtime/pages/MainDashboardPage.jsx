@@ -25,6 +25,9 @@ import CurrentTaskCard from "../components/CurrentTaskCard"
 import AlertItem from "../components/AlertItem"
 import TimelineItem from "../components/TimelineItem"
 import TodaysActivityCard from "../components/TodaysActivityCard"
+import WeatherWaterSummaryCard from "../components/WeatherWaterSummaryCard"
+import ZonesGridSection from "../components/ZonesGridSection"
+import WeatherForecastSection from "../components/WeatherForecastSection"
 
 export default function MainDashboardPage() {
 
@@ -78,46 +81,121 @@ export default function MainDashboardPage() {
         }
     ]
 
-    const nextTasks = [
+    const todaysActivity = [
         {
             id: "t1",
             zoneName: "Orchard",
-            time: "18:30",
+            time: "20:00",
             volume: 14,
             status: "planned"
         },
         {
             id: "t2",
-            zoneName: "Greenhouse",
-            time: "06:00",
-            volume: 10,
-            status: "completed"
-        }
-    ]
-
-    const todaysActivity = [
-        {
-            id: "t1",
-            zoneName: "Greenhouse",
-            time: "06:00",
-            volume: 10,
-            status: "completed"
-        },
-        {
-            id: "t2",
-            zoneName: "Orchard",
+            zoneName: "South Lawn",
             time: "18:30",
-            volume: 14,
+            volume: 12,
             status: "planned"
         },
         {
             id: "t3",
-            zoneName: "South Lawn",
-            time: "20:00",
-            volume: 12,
-            status: "planned"
+            zoneName: "Greenhouse",
+            time: "12:30",
+            volume: 10,
+            status: "completed"
+        }
+
+    ]
+
+    const weatherWaterData = {
+        windowDays: 7,
+        data: [
+            { date: "Mon", water: 120, weather: -12 },
+            { date: "Tue", water: 140, weather: 8 },
+            { date: "Wed", water: 110, weather: -5 },
+            { date: "Thu", water: 160, weather: 15 },
+            { date: "Fri", water: 130, weather: 2 },
+            { date: "Sat", water: 125, weather: -3 },
+            { date: "Sun", water: 150, weather: 10 }
+        ],
+        avgWater: 133,
+        avgWeather: 2
+    }
+
+    const zones = [
+        {
+            id: "1",
+            name: "South Lawn",
+            status: "irrigating", // irrigating | idle | error | stopping
+            enabled: true,
+            online: true,
+            lastRun: "today 12:30",
+            progress: 45
+        },
+        {
+            id: "2",
+            name: "Greenhouse",
+            status: "irrigating",
+            enabled: true,
+            online: true,
+            lastRun: "today 12:30"
+        },
+        {
+            id: "3",
+            name: "South Flowerbed",
+            status: "idle",
+            enabled: true,
+            online: true,
+            lastRun: "today 07:00"
+        },
+        {
+            id: "4",
+            name: "North Lawn",
+            status: "idle",
+            enabled: true,
+            online: true,
+            lastRun: "yesterday"
+        },
+        {
+            id: "5",
+            name: "Orchard",
+            status: "offline",
+            enabled: false,
+            online: false,
+            lastRun: "yesterday"
+        },
+        {
+            id: "6",
+            name: "North Garden",
+            status: "offline",
+            enabled: true,
+            online: false,
+            lastRun: "2 days ago"
+        },
+        {
+            id: "7",
+            name: "East Flowerbed",
+            status: "error",
+            enabled: true,
+            online: true,
+            lastRun: "N/A"
         }
     ]
+
+    const weatherForecastData = {
+        forecastDays: 5,
+        data: [
+            { day: "Mon", rain: 1, temp: 22, adjustment: 5 },
+            { day: "Tue", rain: 3, temp: 21, adjustment: 2 },
+            { day: "Wed", rain: 10, temp: 18, adjustment: -21 },
+            { day: "Thu", rain: 0, temp: 27, adjustment: 12 },
+            { day: "Fri", rain: 1, temp: 25, adjustment: 6 }
+        ],
+        summary: {
+            todayRain: 1,
+            tomorrowRain: 3
+        }
+    }
+
 
 
 
@@ -187,6 +265,7 @@ export default function MainDashboardPage() {
                 <GlassPanelSection
                     title="Current Irrigation"
                     description="Active irrigation tasks"
+                    collapsible
                 >
                     <Stack gap={2}>
                         {currentTasks.map(task => (
@@ -199,6 +278,7 @@ export default function MainDashboardPage() {
                 <GlassPanelSection
                     title="Alerts"
                     description="Recent system notifications requiring attention"
+                    collapsible
                 >
                     <Stack gap={2}>
                         {alerts.map(alert => (
@@ -208,7 +288,19 @@ export default function MainDashboardPage() {
                 </GlassPanelSection>
 
                 {/* SECTION 4 - UPCOMING TASKS */}
-                <TodaysActivityCard items={nextTasks} />
+                <Grid
+                    templateColumns={{ base: "1fr", xl: "1fr 1fr" }}
+                    gap={8}
+                >
+                    <TodaysActivityCard items={todaysActivity} />
+                    <WeatherWaterSummaryCard data={weatherWaterData} />
+                </Grid>
+
+                {/* SECTION 5 - ZONES STATUS */}
+                <ZonesGridSection zones={zones} />
+
+                {/* SECTION 6 - WEATHER FORECAST */}
+                <WeatherForecastSection data={weatherForecastData} />
 
 
             </Stack>

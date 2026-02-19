@@ -37,9 +37,9 @@ export default function SystemOverviewCard({
                 transform: "translateY(-2px)"
             }}
         >
-            <VStack align="start" spacing={4}>
+            <VStack align="start">
 
-                <HStack spacing={3}>
+                <HStack gap={3}>
                     <Box bg="teal.50" p={2} borderRadius="md">
                         <Icon size={18} color="#319795" />
                     </Box>
@@ -49,12 +49,6 @@ export default function SystemOverviewCard({
                         <Text fontSize="sm" fontWeight="600" color="gray.700">
                             {title}
                         </Text>
-                        <Box
-                            w="6px"
-                            h="6px"
-                            borderRadius="full"
-                            bg={statusColor}
-                        />
                     </HStack>
                 </HStack>
 
@@ -73,7 +67,7 @@ export default function SystemOverviewCard({
                 )}
 
                 {footer && (
-                    <HStack spacing={2} pt={2}>
+                    <HStack gap={2} pt={2}>
                         {footer}
                     </HStack>
                 )}
